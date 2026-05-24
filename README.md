@@ -1,0 +1,1 @@
+Study Vibe is an all-in-one study platform that helps students stay focused, organized, and productive. It includes a Pomodoro timer, planner, flashcards, quizzes, summaries, task management, progress tracking, and a smart study time calculator to make learning more efficient, engaging, and enjoyable.
