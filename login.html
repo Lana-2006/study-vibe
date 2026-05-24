@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تسجيل الدخول - StudyVibe</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a9e74;
+    --green-dark: #0f6e52;
+    --green-deeper: #094d3a;
+    --green-light: #d1f0e5;
+    --green-xlight: #eaf8f2;
+    --cream: #faf9f5;
+    --text: #1a1f1c;
+    --text-muted: #5a6b62;
+    --border: rgba(26,158,116,0.18);
+    --shadow: 0 8px 40px rgba(15,110,82,0.13);
+    --radius: 18px;
+    --radius-sm: 10px;
+    --error: #e05252;
+    --error-bg: #fff5f5;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ─── BACKGROUND BLOBS ─── */
+  .bg-blob {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .bg-blob-1 {
+    width: 520px; height: 520px;
+    background: radial-gradient(circle, rgba(26,158,116,0.13) 0%, transparent 70%);
+    top: -160px; right: -160px;
+  }
+  .bg-blob-2 {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(15,110,82,0.09) 0%, transparent 70%);
+    bottom: -120px; left: -120px;
+  }
+
+  /* ─── CARD ─── */
+  .card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 400px;
+    padding: 40px 36px 36px;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.55s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── LOGO ─── */
+  .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .logo-icon {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 3px 14px rgba(26,158,116,0.3);
+  }
+
+  .logo-text {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--green-dark);
+    letter-spacing: -0.5px;
+  }
+  .logo-text em { color: var(--green); font-style: normal; }
+
+  /* ─── TABS ─── */
+  .tabs {
+    display: flex;
+    background: var(--green-xlight);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 4px;
+    margin-bottom: 28px;
+    gap: 4px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 7px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s;
+    background: transparent;
+    color: var(--text-muted);
+  }
+
+  .tab-btn.active {
+    background: white;
+    color: var(--green-dark);
+    box-shadow: 0 2px 10px rgba(15,110,82,0.12);
+  }
+
+  /* ─── FORMS ─── */
+  .form-panel { display: none; }
+  .form-panel.active { display: block; animation: fadeUp 0.35s ease both; }
+
+  .form-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+  }
+
+  .form-subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 22px;
+    line-height: 1.6;
+  }
+
+  /* ─── FIELD ─── */
+  .field {
+    margin-bottom: 16px;
+  }
+
+  .field label {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 7px;
+  }
+
+  .input-wrap {
+    position: relative;
+  }
+
+  .input-wrap .input-icon {
+    position: absolute;
+    top: 50%; right: 14px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    pointer-events: none;
+  }
+
+  .field input {
+    width: 100%;
+    padding: 12px 40px 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: 'Tajawal', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    background: var(--cream);
+    outline: none;
+    transition: all 0.2s;
+  }
+
+  .field input:focus {
+    border-color: var(--green);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(26,158,116,0.1);
+  }
+
+  .field input.error {
+    border-color: var(--error);
+    background: var(--error-bg);
+  }
+
+  /* password toggle */
+  .toggle-pw {
+    position: absolute;
+    top: 50%; left: 12px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--text-muted);
+    background: none;
+    border: none;
+    padding: 0;
+    line-height: 1;
+  }
+
+  /* ─── PASSWORD STRENGTH ─── */
+  .strength-wrap { margin-top: 8px; display: none; }
+  .strength-wrap.show { display: block; }
+
+  .strength-bars {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+
+  .strength-bar {
+    flex: 1;
+    height: 4px;
+    border-radius: 100px;
+    background: #e0e0e0;
+    transition: background 0.3s;
+  }
+
+  .strength-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  /* ─── ERROR MSG ─── */
+  .err-msg {
+    font-size: 12px;
+    color: var(--error);
+    font-weight: 600;
+    margin-top: 5px;
+    display: none;
+  }
+  .err-msg.show { display: block; }
+
+  /* ─── ALERT BOX ─── */
+  .alert-box {
+    border-radius: var(--radius-sm);
+    padding: 11px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: none;
+    align-items: center;
+    gap: 8px;
+  }
+  .alert-box.show { display: flex; }
+  .alert-box.error  { background: var(--error-bg); color: var(--error); border: 1px solid rgba(224,82,82,0.2); }
+  .alert-box.success { background: var(--green-xlight); color: var(--green-dark); border: 1px solid var(--green-light); }
+
+  /* ─── SUBMIT BTN ─── */
+  .btn-submit {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: 'Tajawal', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.25s;
+    box-shadow: 0 4px 16px rgba(26,158,116,0.35);
+    margin-top: 6px;
+    letter-spacing: 0.2px;
+  }
+  .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(26,158,116,0.45);
+  }
+  .btn-submit:active { transform: translateY(0); }
+  .btn-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* ─── DIVIDER ─── */
+  .switch-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+  .switch-link a {
+    color: var(--green-dark);
+    font-weight: 800;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .switch-link a:hover { text-decoration: underline; }
+
+  /* ─── FOOTER NOTE ─── */
+  .footer-note {
+    text-align: center;
+    margin-top: 28px;
+    font-size: 12px;
+    color: #b0bdb8;
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-blob bg-blob-1"></div>
+<div class="bg-blob bg-blob-2"></div>
+
+<div class="card">
+
+  <!-- LOGO -->
+  <div class="logo">
+    <div class="logo-icon">📚</div>
+    <span class="logo-text">Study<em>Vibe</em></span>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">تسجيل الدخول</button>
+    <button class="tab-btn" id="tab-register" onclick="switchTab('register')">حساب جديد</button>
+  </div>
+
+  <!-- ── LOGIN FORM ── -->
+  <div class="form-panel active" id="panel-login">
+    <div class="form-title">أهلاً بعودتك! 👋</div>
+    <div class="form-subtitle">سجّل دخولك وتابع مذاكرتك من حيث توقفت</div>
+
+    <div class="alert-box" id="login-alert"></div>
+
+    <div class="field">
+      <label>اسم المستخدم</label>
+      <div class="input-wrap">
+        <span class="input-icon">👤</span>
+        <input type="text" id="login-username" placeholder="أدخل اسم المستخدم"
+               oninput="clearAlert('login-alert')" onkeydown="enterSubmit(event,'login')">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>كلمة المرور</label>
+      <div class="input-wrap">
+        <span class="input-icon">🔒</span>
+        <input type="password" id="login-password" placeholder="أدخل كلمة المرور"
+               oninput="clearAlert('login-alert')" onkeydown="enterSubmit(event,'login')">
+        <button class="toggle-pw" type="button" onclick="togglePw('login-password', this)">👁</button>
+      </div>
+    </div>
+
+    <button class="btn-submit" onclick="login()">دخول ←</button>
+
+    <div class="switch-link">
+      ليس لديك حساب؟ <a onclick="switchTab('register')">أنشئ حساباً الآن</a>
+    </div>
+  </div>
+
+  <!-- ── REGISTER FORM ── -->
+  <div class="form-panel" id="panel-register">
+    <div class="form-title">أنشئ حسابك 🎓</div>
+    <div class="form-subtitle">انضم إلى StudyVibe وابدأ رحلتك الدراسية</div>
+
+    <div class="alert-box" id="reg-alert"></div>
+
+    <div class="field">
+      <label>اسم المستخدم</label>
+      <div class="input-wrap">
+        <span class="input-icon">👤</span>
+        <input type="text" id="reg-username" placeholder="اختر اسم مستخدم"
+               oninput="clearAlert('reg-alert')">
+      </div>
+      <div class="err-msg" id="err-username">اسم المستخدم مطلوب</div>
+    </div>
+
+    <div class="field">
+      <label>كلمة المرور</label>
+      <div class="input-wrap">
+        <span class="input-icon">🔒</span>
+        <input type="password" id="reg-password" placeholder="اختر كلمة مرور قوية"
+               oninput="checkStrength()" onkeydown="enterSubmit(event,'register')">
+        <button class="toggle-pw" type="button" onclick="togglePw('reg-password', this)">👁</button>
+      </div>
+      <div class="strength-wrap" id="strength-wrap">
+        <div class="strength-bars">
+          <div class="strength-bar" id="sb1"></div>
+          <div class="strength-bar" id="sb2"></div>
+          <div class="strength-bar" id="sb3"></div>
+          <div class="strength-bar" id="sb4"></div>
+        </div>
+        <div class="strength-label" id="strength-label"></div>
+      </div>
+      <div class="err-msg" id="err-password">كلمة المرور ضعيفة — 8 أحرف على الأقل، حرف كبير، رقم، ورمز خاص</div>
+    </div>
+
+    <div class="field">
+      <label>تأكيد كلمة المرور</label>
+      <div class="input-wrap">
+        <span class="input-icon">🔑</span>
+        <input type="password" id="reg-confirm" placeholder="أعد كتابة كلمة المرور"
+               oninput="clearAlert('reg-alert')" onkeydown="enterSubmit(event,'register')">
+        <button class="toggle-pw" type="button" onclick="togglePw('reg-confirm', this)">👁</button>
+      </div>
+      <div class="err-msg" id="err-confirm">كلمتا المرور غير متطابقتين</div>
+    </div>
+
+    <button class="btn-submit" onclick="register()">إنشاء الحساب ←</button>
+
+    <div class="switch-link">
+      لديك حساب بالفعل؟ <a onclick="switchTab('login')">سجّل الدخول</a>
+    </div>
+  </div>
+
+  <div class="footer-note">©️ 2025 StudyVibe — مشروع برمجة صفحات الويب</div>
+</div>
+
+<script>
+  /* ─── TABS ─── */
+  function switchTab(tab) {
+    document.getElementById('panel-login').classList.toggle('active', tab === 'login');
+    document.getElementById('panel-register').classList.toggle('active', tab === 'register');
+    document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+    document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+    clearAlert('login-alert');
+    clearAlert('reg-alert');
+  }
+
+  /* ─── ENTER KEY ─── */
+  function enterSubmit(e, form) {
+    if (e.key === 'Enter') form === 'login' ? login() : register();
+  }
+
+  /* ─── TOGGLE PASSWORD ─── */
+  function togglePw(inputId, btn) {
+    const inp = document.getElementById(inputId);
+    const isText = inp.type === 'text';
+    inp.type = isText ? 'password' : 'text';
+    btn.textContent = isText ? '👁' : '🙈';
+  }
+
+  /* ─── ALERT HELPERS ─── */
+  function showAlert(id, msg, type) {
+    const el = document.getElementById(id);
+    el.textContent = (type === 'error' ? '⚠️ ' : '✅ ') + msg;
+    el.className = 'alert-box show ' + type;
+  }
+  function clearAlert(id) {
+    const el = document.getElementById(id);
+    el.className = 'alert-box';
+  }
+
+  function showErr(id, show) {
+    document.getElementById(id).classList.toggle('show', show);
+  }
+
+  /* ─── PASSWORD STRENGTH ─── */
+  function checkStrength() {
+    const pw = document.getElementById('reg-password').value;
+    const wrap = document.getElementById('strength-wrap');
+    if (!pw) { wrap.classList.remove('show'); return; }
+    wrap.classList.add('show');
+
+    let score = 0;
+    if (pw.length >= 8)            score++;
+    if (/[A-Z]/.test(pw))         score++;
+    if (/\d/.test(pw))            score++;
+    if (/[\W_]/.test(pw))         score++;
+
+    const colors  = ['#e05252','#e07c30','#e0b830','#1a9e74'];
+    const labels  = ['ضعيفة جداً','ضعيفة','متوسطة','قوية 💪'];
+
+    for (let i = 1; i <= 4; i++) {
+      document.getElementById('sb' + i).style.background = i <= score ? colors[score - 1] : '#e0e0e0';
+    }
+    document.getElementById('strength-label').textContent = labels[score - 1] || '';
+    document.getElementById('strength-label').style.color = colors[score - 1] || '#b0bdb8';
+
+    clearAlert('reg-alert');
+  }
+
+  function isStrongPassword(pw) {
+    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/.test(pw);
+  }
+
+  /* ─── LOGIN ─── */
+  function login() {
+    const username = document.getElementById('login-username').value.trim();
+    const password = document.getElementById('login-password').value.trim();
+
+    if (!username || !password) {
+      showAlert('login-alert', 'الرجاء إدخال اسم المستخدم وكلمة المرور', 'error');
+      return;
+    }
+
+    const users = JSON.parse(localStorage.getItem('users') || '{}');
+
+    if (users[username] && users[username] === password) {
+      localStorage.setItem('currentUser', username);
+      localStorage.setItem('username', username);
+      showAlert('login-alert', 'تسجيل الدخول ناجح! جاري التحويل...', 'success');
+      setTimeout(() => window.location.href = 'per.html', 900);
+    } else {
+      showAlert('login-alert', 'اسم المستخدم أو كلمة المرور غير صحيحة', 'error');
+      document.getElementById('login-password').value = '';
+    }
+  }
+
+  /* ─── REGISTER ─── */
+  function register() {
+    const username = document.getElementById('reg-username').value.trim();
+    const password = document.getElementById('reg-password').value;
+    const confirm  = document.getElementById('reg-confirm').value;
+
+    let valid = true;
+
+    if (!username) {
+      showErr('err-username', true); valid = false;
+    } else { showErr('err-username', false); }
+
+    if (!isStrongPassword(password)) {
+      showErr('err-password', true); valid = false;
+    } else { showErr('err-password', false); }
+
+    if (password !== confirm) {
+      showErr('err-confirm', true); valid = false;
+    } else { showErr('err-confirm', false); }
+
+    if (!valid) return;
+
+    const users = JSON.parse(localStorage.getItem('users') || '{}');
+
+    if (users[username]) {
+      showAlert('reg-alert', 'اسم المستخدم موجود بالفعل، اختر اسماً آخر', 'error');
+      return;
+    }
+
+    users[username] = password;
+    localStorage.setItem('users', JSON.stringify(users));
+    showAlert('reg-alert', 'تم إنشاء الحساب بنجاح! يمكنك الآن تسجيل الدخول', 'success');
+    setTimeout(() => switchTab('login'), 1200);
+  }
+</script>
+</body>
+</html>

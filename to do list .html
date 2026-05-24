@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyVibe - قائمة المهام</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a9e74;
+    --green-dark: #0f6e52;
+    --green-deeper: #094d3a;
+    --green-light: #d1f0e5;
+    --green-xlight: #eaf8f2;
+    --cream: #faf9f5;
+    --text: #1a1f1c;
+    --text-muted: #5a6b62;
+    --border: rgba(26,158,116,0.15);
+    --shadow: 0 4px 24px rgba(15,110,82,0.10);
+    --shadow-hover: 0 8px 36px rgba(15,110,82,0.18);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    height: 68px;
+  }
+
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .logo-icon {
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 2px 12px rgba(26,158,116,0.3);
+  }
+
+  .logo-text {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--green-dark);
+    letter-spacing: -0.5px;
+  }
+
+  .back-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--green-xlight);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--green-dark);
+    font-family: 'Tajawal', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 9px 18px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .back-btn:hover { background: var(--green-light); border-color: var(--green); }
+
+  /* ─── PAGE HERO ─── */
+  .page-hero {
+    background: linear-gradient(135deg, var(--green-deeper), var(--green-dark));
+    color: white;
+    padding: 44px 28px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%;
+    transform: translateX(-50%);
+    width: 700px; height: 400px;
+    background: radial-gradient(ellipse, rgba(255,255,255,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .page-hero-icon { font-size: 48px; margin-bottom: 12px; display: block; }
+  .page-hero h1 {
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+  }
+  .page-hero p { font-size: 16px; opacity: 0.85; font-weight: 400; }
+
+  /* ─── MAIN ─── */
+  .main { max-width: 1100px; margin: 0 auto; padding: 36px 24px 60px; }
+
+  /* ─── SECTION LABEL ─── */
+  .section-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ─── STATS ROW ─── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  @media(max-width:600px){ .stats-row { grid-template-columns: 1fr; } }
+
+  .stat-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: all 0.25s;
+  }
+  .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+
+  .stat-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .stat-icon { font-size: 24px; }
+  .stat-num {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--green);
+    letter-spacing: -1px;
+  }
+  .stat-lbl { font-size: 13px; color: var(--text-muted); font-weight: 600; margin-bottom: 10px; }
+
+  .mini-track {
+    height: 6px;
+    background: var(--green-xlight);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+  .mini-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), #2ec4a0);
+    border-radius: 100px;
+    width: 0%;
+    transition: width 1s ease;
+  }
+
+  /* ─── QUICK ACTIONS ─── */
+  .quick-bar {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+  .quick-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .action-btn {
+    background: var(--green-xlight);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--green-dark);
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .action-btn:hover { background: var(--green-light); border-color: var(--green); }
+  .action-btn.danger { background: #fde8e8; border-color: rgba(180,30,30,0.15); color: #8b1a1a; }
+  .action-btn.danger:hover { background: #f9d0d0; }
+
+  /* ─── TASKS GRID ─── */
+  .tasks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+  }
+
+  .task-section {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.25s;
+    display: flex;
+    flex-direction: column;
+  }
+  .task-section:hover { box-shadow: var(--shadow-hover); }
+
+  .task-section-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .task-section-icon { font-size: 22px; }
+  .task-section-title { font-size: 17px; font-weight: 800; color: var(--text); }
+
+  /* ─── TASK ITEMS ─── */
+  .task-list { flex: 1; }
+
+  .task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px 12px;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .task-item:last-child { margin-bottom: 0; }
+  .task-item:hover { background: var(--green-xlight); border-color: var(--green-light); }
+  .task-item.completed { opacity: 0.55; }
+  .task-item.completed .task-text { text-decoration: line-through; color: var(--text-muted); }
+
+  .checkbox {
+    min-width: 20px; min-height: 20px;
+    border: 2px solid var(--green);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: white;
+    background: white;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .checkbox.checked { background: var(--green); }
+
+  .task-text { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.5; flex: 1; }
+
+  .task-delete {
+    opacity: 0;
+    font-size: 14px;
+    color: var(--text-muted);
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  .task-item:hover .task-delete { opacity: 1; }
+  .task-delete:hover { color: #c0392b; background: #fde8e8; }
+
+  /* ─── ADD TASK ─── */
+  .add-area { margin-top: 14px; }
+
+  .add-task-btn {
+    width: 100%;
+    padding: 11px;
+    background: var(--green-xlight);
+    border: 1.5px dashed var(--green-light);
+    border-radius: var(--radius-sm);
+    color: var(--green-dark);
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .add-task-btn:hover { background: var(--green-light); border-color: var(--green); }
+
+  .input-row {
+    display: none;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .input-row.active { display: flex; }
+
+  .task-input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    background: var(--cream);
+    outline: none;
+    transition: 0.2s;
+  }
+  .task-input:focus { border-color: var(--green); background: white; }
+
+  .save-btn {
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .save-btn:hover { background: var(--green-dark); }
+
+  .cancel-btn {
+    background: var(--cream);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .cancel-btn:hover { background: #f0ece4; }
+
+  /* ─── TOAST ─── */
+  .toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--green-deeper);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 100px;
+    font-size: 15px;
+    font-weight: 700;
+    z-index: 999;
+    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+    white-space: nowrap;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--green-deeper);
+    color: rgba(255,255,255,0.75);
+    text-align: center;
+    padding: 24px;
+    font-size: 14px;
+    margin-top: 60px;
+  }
+  footer strong { color: white; font-size: 16px; font-weight: 800; display: block; margin-bottom: 4px; }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .anim { animation: fadeUp 0.55s ease both; }
+  .d1 { animation-delay: 0.05s; }
+  .d2 { animation-delay: 0.12s; }
+  .d3 { animation-delay: 0.19s; }
+</style>
+</head>
+<body>
+
+<script>
+  if (!localStorage.getItem('currentUser')) window.location.href = 'login.html';
+</script>
+
+<!-- HEADER -->
+<header>
+  <a class="back-btn" href="per.html">← الرئيسية</a>
+  <a class="logo-wrap" href="per.html">
+    <div class="logo-icon">📚</div>
+    <span class="logo-text">StudyVibe</span>
+  </a>
+</header>
+
+<!-- HERO -->
+<div class="page-hero">
+  <span class="page-hero-icon">📝</span>
+  <h1>قائمة المهام</h1>
+  <p>نظّم مهامك اليومية والأسبوعية وحقق أهدافك الدراسية</p>
+</div>
+
+<div class="main">
+
+  <!-- STATS -->
+  <div class="section-label anim d1">نظرة عامة</div>
+  <div class="stats-row anim d1">
+    <div class="stat-card">
+      <div class="stat-top">
+        <span class="stat-icon">☀️</span>
+        <span class="stat-num" id="dailyProgress">0/5</span>
+      </div>
+      <div class="stat-lbl">المهام اليومية</div>
+      <div class="mini-track"><div class="mini-fill" id="dailyBar"></div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-top">
+        <span class="stat-icon">📅</span>
+        <span class="stat-num" id="weeklyProgress">0/4</span>
+      </div>
+      <div class="stat-lbl">المهام الأسبوعية</div>
+      <div class="mini-track"><div class="mini-fill" id="weeklyBar"></div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-top">
+        <span class="stat-icon">📚</span>
+        <span class="stat-num" id="studyProgress">0/4</span>
+      </div>
+      <div class="stat-lbl">المهام الدراسية</div>
+      <div class="mini-track"><div class="mini-fill" id="studyBar"></div></div>
+    </div>
+  </div>
+
+  <!-- QUICK ACTIONS -->
+  <div class="section-label anim d2">إجراءات سريعة</div>
+  <div class="quick-bar anim d2">
+    <span class="quick-label">⚡ تحكم سريع:</span>
+    <button class="action-btn" onclick="markAllDaily()">✅ إكمال اليومية</button>
+    <button class="action-btn" onclick="clearCompleted()">🗑️ حذف المكتملة</button>
+    <button class="action-btn danger" onclick="resetAll()">↺ إعادة ضبط الكل</button>
+  </div>
+
+  <!-- TASKS -->
+  <div class="section-label anim d3">المهام</div>
+  <div class="tasks-grid anim d3">
+
+    <!-- DAILY -->
+    <div class="task-section">
+      <div class="task-section-head">
+        <span class="task-section-icon">☀️</span>
+        <span class="task-section-title">المهام اليومية</span>
+      </div>
+      <div class="task-list" id="dailyTasks"></div>
+      <div class="add-area">
+        <button class="add-task-btn" onclick="showInput('daily')">+ إضافة مهمة يومية</button>
+        <div class="input-row" id="dailyInput">
+          <input type="text" class="task-input" placeholder="اكتب مهمة جديدة..." onkeydown="if(event.key==='Enter')addTask('daily')">
+          <button class="save-btn" onclick="addTask('daily')">حفظ</button>
+          <button class="cancel-btn" onclick="hideInput('daily')">إلغاء</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEEKLY -->
+    <div class="task-section">
+      <div class="task-section-head">
+        <span class="task-section-icon">📅</span>
+        <span class="task-section-title">المهام الأسبوعية</span>
+      </div>
+      <div class="task-list" id="weeklyTasks"></div>
+      <div class="add-area">
+        <button class="add-task-btn" onclick="showInput('weekly')">+ إضافة مهمة أسبوعية</button>
+        <div class="input-row" id="weeklyInput">
+          <input type="text" class="task-input" placeholder="اكتب مهمة جديدة..." onkeydown="if(event.key==='Enter')addTask('weekly')">
+          <button class="save-btn" onclick="addTask('weekly')">حفظ</button>
+          <button class="cancel-btn" onclick="hideInput('weekly')">إلغاء</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STUDY -->
+    <div class="task-section">
+      <div class="task-section-head">
+        <span class="task-section-icon">📚</span>
+        <span class="task-section-title">المهام الدراسية</span>
+      </div>
+      <div class="task-list" id="studyTasks"></div>
+      <div class="add-area">
+        <button class="add-task-btn" onclick="showInput('study')">+ إضافة مهمة دراسية</button>
+        <div class="input-row" id="studyInput">
+          <input type="text" class="task-input" placeholder="اكتب مهمة جديدة..." onkeydown="if(event.key==='Enter')addTask('study')">
+          <button class="save-btn" onclick="addTask('study')">حفظ</button>
+          <button class="cancel-btn" onclick="hideInput('study')">إلغاء</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- FOOTER -->
+<footer>
+  <strong>StudyVibe</strong>
+  🚀 استمر في العمل وحقق كل أهدافك!
+  <br>© 2025 StudyVibe
+</footer>
+
+<script>
+  const tasks = {
+    daily: [
+      { text: 'المذاكرة 25-45 دقيقة', completed: false },
+      { text: 'قراءة 5 صفحات', completed: false },
+      { text: 'حل 10 تمارين', completed: false },
+      { text: 'تنظيم المكتب', completed: false },
+      { text: 'كتابة خطة اليوم', completed: false }
+    ],
+    weekly: [
+      { text: 'مراجعة مادة كاملة', completed: false },
+      { text: 'تنظيم الملفات الدراسية', completed: false },
+      { text: 'تحديث الجدول الدراسي', completed: false },
+      { text: 'إضافة أهداف جديدة', completed: false }
+    ],
+    study: [
+      { text: 'الواجبات المنزلية', completed: false },
+      { text: 'الاستعداد للاختبار', completed: false },
+      { text: 'إكمال مشروع', completed: false },
+      { text: 'حضور درس / محاضرة', completed: false }
+    ]
+  };
+
+  function renderTasks() {
+    ['daily', 'weekly', 'study'].forEach(type => {
+      const container = document.getElementById(type + 'Tasks');
+      if (!tasks[type].length) {
+        container.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-muted);font-size:14px;font-weight:600;">لا توجد مهام بعد ✨</div>';
+      } else {
+        container.innerHTML = tasks[type].map((t, i) => `
+          <div class="task-item ${t.completed ? 'completed' : ''}" onclick="toggleTask('${type}', ${i})">
+            <div class="checkbox ${t.completed ? 'checked' : ''}">${t.completed ? '✓' : ''}</div>
+            <div class="task-text">${t.text}</div>
+            <button class="task-delete" onclick="deleteTask(event,'${type}',${i})">✕</button>
+          </div>
+        `).join('');
+      }
+      updateProgress();
+    });
+  }
+
+  function toggleTask(type, i) {
+    tasks[type][i].completed = !tasks[type][i].completed;
+    if (tasks[type][i].completed) {
+      playSound();
+      checkAllCompleted(type);
+    }
+    renderTasks();
+  }
+
+  function deleteTask(e, type, i) {
+    e.stopPropagation();
+    tasks[type].splice(i, 1);
+    renderTasks();
+  }
+
+  function updateProgress() {
+    ['daily', 'weekly', 'study'].forEach(type => {
+      const done  = tasks[type].filter(t => t.completed).length;
+      const total = tasks[type].length;
+      const pct   = total ? Math.round((done / total) * 100) : 0;
+      document.getElementById(type + 'Progress').textContent = done + '/' + total;
+      document.getElementById(type + 'Bar').style.width = pct + '%';
+    });
+  }
+
+  function showInput(type) {
+    document.getElementById(type + 'Input').classList.add('active');
+    document.querySelector('#' + type + 'Input .task-input').focus();
+  }
+
+  function hideInput(type) {
+    document.getElementById(type + 'Input').classList.remove('active');
+    document.querySelector('#' + type + 'Input .task-input').value = '';
+  }
+
+  function addTask(type) {
+    const input = document.querySelector('#' + type + 'Input .task-input');
+    const text  = input.value.trim();
+    if (text) {
+      tasks[type].push({ text, completed: false });
+      renderTasks();
+      hideInput(type);
+      showToast('✅ تمت إضافة المهمة!');
+    }
+  }
+
+  function clearCompleted() {
+    ['daily', 'weekly', 'study'].forEach(type => {
+      tasks[type] = tasks[type].filter(t => !t.completed);
+    });
+    renderTasks();
+    showToast('🗑️ تم حذف المهام المكتملة');
+  }
+
+  function markAllDaily() {
+    tasks.daily.forEach(t => t.completed = true);
+    renderTasks();
+    showToast('🎉 أحسنت! أكملت جميع المهام اليومية!');
+  }
+
+  function resetAll() {
+    if (confirm('هل تريد إعادة ضبط جميع المهام؟')) {
+      ['daily', 'weekly', 'study'].forEach(type => {
+        tasks[type].forEach(t => t.completed = false);
+      });
+      renderTasks();
+      showToast('↺ تم إعادة ضبط المهام');
+    }
+  }
+
+  function checkAllCompleted(type) {
+    if (tasks[type].length && tasks[type].every(t => t.completed)) {
+      const msgs = {
+        daily:  '🎉 رائع! أكملت جميع المهام اليومية!',
+        weekly: '🌟 مذهل! أكملت جميع المهام الأسبوعية!',
+        study:  '📚 عمل رائع! أنهيت جميع المهام الدراسية!'
+      };
+      setTimeout(() => showToast(msgs[type]), 300);
+    }
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  function playSound() {
+    const a = new Audio('https://cdn.pixabay.com/audio/2022/03/10/audio_1e5d934ee4.mp3');
+    a.volume = 0.3;
+    a.play().catch(() => {});
+  }
+
+  renderTasks();
+</script>
+</body>
+</html>

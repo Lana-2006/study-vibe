@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>أسئلة تفاعلية — StudyVibe</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a9e74;
+    --green-dark: #0f6e52;
+    --green-deeper: #094d3a;
+    --green-light: #d1f0e5;
+    --green-xlight: #eaf8f2;
+    --cream: #faf9f5;
+    --text: #1a1f1c;
+    --text-muted: #5a6b62;
+    --border: rgba(26,158,116,0.15);
+    --card-bg: #ffffff;
+    --shadow: 0 4px 24px rgba(15,110,82,0.10);
+    --shadow-hover: 0 8px 36px rgba(15,110,82,0.18);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --red: #e05555;
+    --red-light: #fdeaea;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 28px; height: 68px;
+  }
+  .logo-wrap { display: flex; align-items: center; gap: 10px; }
+  .logo-icon {
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    font-size: 20px; box-shadow: 0 2px 12px rgba(26,158,116,0.3);
+  }
+  .logo-text { font-size: 22px; font-weight: 800; color: var(--green-dark); letter-spacing: -0.5px; }
+  .back-btn {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--green-xlight); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); color: var(--green-dark);
+    font-family: 'Tajawal', sans-serif; font-size: 14px; font-weight: 700;
+    padding: 8px 16px; cursor: pointer; text-decoration: none;
+    transition: all 0.2s;
+  }
+  .back-btn:hover { background: var(--green-light); }
+
+  .sidebar {
+    height: 100%; width: 0; position: fixed; z-index: 200;
+    top: 0; right: 0; background: var(--green-deeper);
+    overflow-x: hidden; transition: 0.35s cubic-bezier(0.4,0,0.2,1);
+    padding-top: 70px; box-shadow: -4px 0 40px rgba(0,0,0,0.25);
+  }
+  .sidebar-logo {
+    position: absolute; top: 0; right: 0; left: 0; height: 68px;
+    display: flex; align-items: center; padding: 0 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .sidebar-logo span { font-size: 20px; font-weight: 800; color: white; }
+  .sidebar a {
+    padding: 13px 22px; text-decoration: none; font-size: 16px; font-weight: 500;
+    color: rgba(255,255,255,0.85); display: flex; align-items: center; gap: 10px;
+    transition: all 0.2s; border-right: 3px solid transparent;
+  }
+  .sidebar a:hover { background: rgba(255,255,255,0.07); color: white; border-right-color: var(--green); padding-right: 26px; }
+  .sidebar .divider { height: 1px; background: rgba(255,255,255,0.08); margin: 8px 20px; }
+  .close-btn {
+    position: absolute; top: 18px; left: 18px; font-size: 24px;
+    color: rgba(255,255,255,0.7); cursor: pointer;
+    background: rgba(255,255,255,0.08); width: 36px; height: 36px;
+    border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: 0.2s;
+  }
+  .close-btn:hover { color: white; background: rgba(255,255,255,0.15); }
+  .sidebar-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.4); z-index: 150; backdrop-filter: blur(2px);
+  }
+  .menu-btn {
+    width: 42px; height: 42px; background: var(--green-xlight);
+    border: 1px solid var(--border); border-radius: var(--radius-sm);
+    color: var(--green-dark); font-size: 20px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+  }
+  .menu-btn:hover { background: var(--green-light); }
+
+  .page-hero {
+    padding: 48px 28px 36px; text-align: center; position: relative;
+  }
+  .page-hero::before {
+    content: '';
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 500px; height: 250px;
+    background: radial-gradient(ellipse at center, rgba(26,158,116,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .page-hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--green-xlight); border: 1px solid var(--green-light);
+    color: var(--green-dark); font-size: 14px; font-weight: 600;
+    padding: 6px 16px; border-radius: 100px; margin-bottom: 16px;
+  }
+  .page-hero h1 {
+    font-size: clamp(28px, 5vw, 44px); font-weight: 900;
+    color: var(--text); line-height: 1.2; letter-spacing: -0.8px; margin-bottom: 10px;
+  }
+  .page-hero h1 em { font-style: normal; color: var(--green); }
+  .page-hero p { font-size: 16px; color: var(--text-muted); font-weight: 400; }
+
+  .main-wrap {
+    max-width: 960px; margin: 0 auto; padding: 0 28px 60px;
+    display: grid; grid-template-columns: 1fr 300px; gap: 24px;
+  }
+  @media(max-width: 720px) { .main-wrap { grid-template-columns: 1fr; } }
+
+  .quiz-panel {
+    background: white; border: 1px solid var(--border);
+    border-radius: var(--radius); box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .setup-screen { padding: 32px; }
+  .setup-screen h2 { font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text); }
+
+  .setup-field { margin-bottom: 18px; }
+  .setup-field label { display: block; font-size: 14px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; }
+  .setup-field input, .setup-field textarea, .setup-field select {
+    width: 100%; border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+    padding: 11px 14px; font-family: 'Tajawal', sans-serif; font-size: 15px;
+    color: var(--text); background: var(--cream); outline: none; transition: 0.2s;
+    resize: vertical;
+  }
+  .setup-field input:focus, .setup-field textarea:focus, .setup-field select:focus {
+    border-color: var(--green); background: white;
+  }
+  .setup-field textarea { min-height: 120px; }
+
+  .setup-hint {
+    background: var(--green-xlight); border: 1px solid var(--green-light);
+    border-radius: var(--radius-sm); padding: 14px; font-size: 13px;
+    color: var(--green-dark); line-height: 1.7; margin-bottom: 20px;
+  }
+  .setup-hint strong { font-weight: 800; }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    color: white; border: none; padding: 13px 28px;
+    border-radius: var(--radius-sm); font-family: 'Tajawal', sans-serif;
+    font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.25s;
+    box-shadow: 0 4px 16px rgba(26,158,116,0.35); width: 100%;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(26,158,116,0.45); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .loading-screen {
+    padding: 60px 32px; text-align: center; display: none;
+  }
+  .spinner {
+    width: 56px; height: 56px; margin: 0 auto 24px;
+    border: 4px solid var(--green-light);
+    border-top-color: var(--green);
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-screen p { color: var(--text-muted); font-size: 16px; font-weight: 600; }
+
+  .quiz-screen { display: none; }
+
+  .quiz-header {
+    background: var(--green-deeper); color: white; padding: 20px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .quiz-header-left { display: flex; flex-direction: column; gap: 4px; }
+  .quiz-topic { font-size: 13px; font-weight: 600; opacity: 0.7; }
+  .quiz-progress-text { font-size: 20px; font-weight: 900; }
+
+  .progress-bar-wrap {
+    background: rgba(255,255,255,0.15); border-radius: 100px; height: 6px; width: 120px;
+  }
+  .progress-bar-fill {
+    height: 100%; background: #7ee8c2; border-radius: 100px;
+    transition: width 0.5s ease;
+  }
+
+  .score-badge {
+    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px; padding: 8px 14px; text-align: center;
+  }
+  .score-badge-num { font-size: 22px; font-weight: 900; }
+  .score-badge-label { font-size: 11px; opacity: 0.7; font-weight: 600; }
+
+  .question-body { padding: 28px 28px 0; }
+
+  .q-num-tag {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--green-xlight); border: 1px solid var(--green-light);
+    color: var(--green-dark); font-size: 12px; font-weight: 700;
+    padding: 4px 10px; border-radius: 100px; margin-bottom: 14px;
+  }
+
+  .question-text {
+    font-size: 19px; font-weight: 700; color: var(--text);
+    line-height: 1.55; margin-bottom: 24px;
+  }
+
+  .options-grid { display: flex; flex-direction: column; gap: 10px; padding: 0 28px 28px; }
+
+  .option-btn {
+    background: var(--cream); border: 2px solid var(--border);
+    border-radius: var(--radius-sm); padding: 14px 18px;
+    font-family: 'Tajawal', sans-serif; font-size: 15px; font-weight: 600;
+    color: var(--text); cursor: pointer; text-align: right;
+    transition: all 0.2s; display: flex; align-items: center; gap: 12px;
+    position: relative; overflow: hidden;
+  }
+  .option-btn:hover:not(:disabled) { border-color: var(--green); background: var(--green-xlight); }
+  .option-btn:disabled { cursor: default; }
+
+  .option-letter {
+    min-width: 30px; height: 30px; border-radius: 50%;
+    background: white; border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800; color: var(--text-muted);
+    transition: 0.2s; flex-shrink: 0;
+  }
+
+  .option-btn.correct { background: var(--green-xlight); border-color: var(--green); }
+  .option-btn.correct .option-letter { background: var(--green); border-color: var(--green); color: white; }
+
+  .option-btn.wrong { background: var(--red-light); border-color: var(--red); }
+  .option-btn.wrong .option-letter { background: var(--red); border-color: var(--red); color: white; }
+
+  .option-btn.reveal-correct { background: var(--green-xlight); border-color: var(--green); }
+  .option-btn.reveal-correct .option-letter { background: var(--green); border-color: var(--green); color: white; }
+
+  .feedback-box {
+    margin: 0 28px 20px;
+    padding: 14px 16px; border-radius: var(--radius-sm);
+    font-size: 14px; font-weight: 600; line-height: 1.6;
+    display: none;
+  }
+  .feedback-box.correct { background: var(--green-xlight); border: 1px solid var(--green-light); color: var(--green-dark); }
+  .feedback-box.wrong { background: var(--red-light); border: 1px solid #f5c6c6; color: #a83232; }
+
+  .quiz-actions { padding: 0 28px 28px; display: flex; gap: 10px; }
+  .btn-next {
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    color: white; border: none; padding: 12px 24px;
+    border-radius: var(--radius-sm); font-family: 'Tajawal', sans-serif;
+    font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.25s;
+    box-shadow: 0 3px 12px rgba(26,158,116,0.3); display: none; flex: 1;
+  }
+  .btn-next:hover { transform: translateY(-1px); box-shadow: 0 5px 18px rgba(26,158,116,0.4); }
+
+  .btn-restart {
+    background: white; border: 1.5px solid var(--border);
+    color: var(--text-muted); padding: 12px 20px;
+    border-radius: var(--radius-sm); font-family: 'Tajawal', sans-serif;
+    font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-restart:hover { border-color: var(--green); color: var(--green-dark); }
+
+  .result-screen {
+    display: none; padding: 44px 32px; text-align: center;
+  }
+  .result-emoji { font-size: 64px; margin-bottom: 16px; }
+  .result-title { font-size: 28px; font-weight: 900; color: var(--text); margin-bottom: 8px; }
+  .result-subtitle { font-size: 16px; color: var(--text-muted); margin-bottom: 28px; }
+
+  .result-ring {
+    position: relative; width: 160px; height: 160px; margin: 0 auto 28px;
+  }
+  .result-ring svg { transform: rotate(-90deg); }
+  .result-ring-center {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .result-pct { font-size: 38px; font-weight: 900; color: var(--green); line-height: 1; }
+  .result-pct-label { font-size: 13px; color: var(--text-muted); font-weight: 600; }
+
+  .result-stats {
+    display: flex; justify-content: center; gap: 0;
+    background: var(--cream); border: 1px solid var(--border);
+    border-radius: var(--radius); overflow: hidden; margin-bottom: 28px;
+  }
+  .result-stat { flex: 1; padding: 16px 10px; text-align: center; border-left: 1px solid var(--border); }
+  .result-stat:last-child { border-left: none; }
+  .result-stat-num { font-size: 24px; font-weight: 800; color: var(--green); display: block; }
+  .result-stat-label { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+
+  .btn-try-again {
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    color: white; border: none; padding: 13px 32px;
+    border-radius: var(--radius-sm); font-family: 'Tajawal', sans-serif;
+    font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.25s;
+    box-shadow: 0 4px 16px rgba(26,158,116,0.35); margin-bottom: 10px; display: block; width: 100%;
+  }
+  .btn-try-again:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(26,158,116,0.45); }
+
+  .btn-new-quiz {
+    background: white; border: 1.5px solid var(--border);
+    color: var(--text-muted); padding: 12px 28px;
+    border-radius: var(--radius-sm); font-family: 'Tajawal', sans-serif;
+    font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; width: 100%;
+  }
+  .btn-new-quiz:hover { border-color: var(--green); color: var(--green-dark); }
+
+  .side-panel { display: flex; flex-direction: column; gap: 18px; }
+
+  .side-card {
+    background: white; border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 22px 20px; box-shadow: var(--shadow);
+  }
+  .side-card h3 {
+    font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 14px;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .preset-list { display: flex; flex-direction: column; gap: 8px; }
+  .preset-btn {
+    background: var(--cream); border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm); padding: 10px 14px;
+    font-family: 'Tajawal', sans-serif; font-size: 14px; font-weight: 600;
+    color: var(--text); cursor: pointer; text-align: right;
+    transition: 0.2s; display: flex; align-items: center; gap: 8px;
+  }
+  .preset-btn:hover { border-color: var(--green); background: var(--green-xlight); color: var(--green-dark); }
+
+  .history-list { display: flex; flex-direction: column; gap: 8px; }
+  .history-item {
+    background: var(--cream); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 10px 12px; font-size: 13px;
+  }
+  .history-item-topic { font-weight: 700; color: var(--text); margin-bottom: 3px; }
+  .history-item-score {
+    font-weight: 800; color: var(--green); font-size: 14px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .history-item-date { font-size: 11px; color: var(--text-muted); font-weight: 400; }
+  .no-history { font-size: 13px; color: var(--text-muted); text-align: center; padding: 10px 0; }
+
+  .tip-card {
+    background: linear-gradient(135deg, var(--green-deeper), var(--green-dark));
+    border-radius: var(--radius); padding: 22px 20px; color: white;
+    position: relative; overflow: hidden;
+  }
+  .tip-card::before {
+    content: '💡';
+    position: absolute; font-size: 80px; opacity: 0.08;
+    bottom: -10px; left: -10px; line-height: 1;
+  }
+  .tip-card h3 { font-size: 15px; font-weight: 800; margin-bottom: 10px; }
+  .tip-card p { font-size: 13px; opacity: 0.85; line-height: 1.7; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  .anim { animation: fadeUp 0.5s ease both; }
+  .anim-d1 { animation-delay: 0.1s; }
+  .anim-d2 { animation-delay: 0.2s; }
+
+  @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 60%{transform:translateX(6px)} }
+  .shake { animation: shake 0.35s ease; }
+
+  @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.04)} 100%{transform:scale(1)} }
+  .pop { animation: pop 0.3s ease; }
+
+  footer {
+    background: var(--green-deeper); color: rgba(255,255,255,0.8);
+    text-align: center; padding: 28px 20px; font-size: 14px; line-height: 1.8;
+  }
+  footer strong { color: white; font-size: 18px; font-weight: 800; display: block; margin-bottom: 6px; }
+  footer a { color: #7ee8c2; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<header>
+  <button class="menu-btn" onclick="openSidebar()">☰</button>
+  <div class="logo-wrap">
+    <div class="logo-icon">📚</div>
+    <span class="logo-text">Study<em style="color:var(--green)">Vibe</em></span>
+  </div>
+  <a class="back-btn" href="per.html">← الرئيسية</a>
+</header>
+
+<div id="mySidebar" class="sidebar">
+  <div class="sidebar-logo"><span>StudyVibe</span></div>
+  <span class="close-btn" onclick="closeSidebar()">✕</span>
+  <a href="falsh card.html">🧠 فلاشكارد</a>
+  <a href="mol.html" style="color:white;border-right-color:var(--green);background:rgba(255,255,255,0.07)">❓ أسئلة تفاعلية</a>
+  <a href="page.html">📖 ملخصات</a>
+  <div class="divider"></div>
+  <a href="eng.html">⭐ الإنجازات</a>
+  <a href="to do list .html">📝 قائمة المهام</a>
+  <a href="study.html">📊 التقدم الدراسي</a>
+  <div class="divider"></div>
+  <a href="#" onclick="logout()" style="color:rgba(255,150,150,0.9);">🚪 تسجيل الخروج</a>
+</div>
+
+<section class="page-hero">
+  <div class="page-hero-badge anim">❓ اختبر معلوماتك</div>
+  <h1 class="anim anim-d1">أسئلة <em>تفاعلية</em> ذكية</h1>
+  <p class="anim anim-d2">اكتب موضوعك أو ألصق النص واحصل على أسئلة فورية بالذكاء الاصطناعي</p>
+</section>
+
+<div class="main-wrap">
+  <div class="quiz-panel" id="quizPanel">
+
+    <div class="setup-screen" id="setupScreen">
+      <h2>🎯 أنشئ اختبارك</h2>
+      <div class="setup-hint">
+        💡 <strong>كيف يعمل؟</strong><br>
+        اكتب موضوعاً دراسياً أو الصق نصاً من ملاحظاتك، وسيولّد الذكاء الاصطناعي أسئلة اختيار متعدد تفاعلية لك على الفور.
+      </div>
+      <div class="setup-field">
+        <label>📌 الموضوع أو النص الدراسي</label>
+        <textarea id="topicInput" placeholder="مثال: الثورة الفرنسية وأسبابها وتداعياتها على أوروبا...&#10;&#10;أو الصق أي نص دراسي هنا مباشرة"></textarea>
+      </div>
+      <div class="setup-field">
+        <label>🔢 عدد الأسئلة</label>
+        <select id="qCountSelect">
+          <option value="3">3 أسئلة (سريع)</option>
+          <option value="5" selected>5 أسئلة (متوسط)</option>
+          <option value="8">8 أسئلة (شامل)</option>
+          <option value="10">10 أسئلة (تفصيلي)</option>
+        </select>
+      </div>
+      <div class="setup-field">
+        <label>🎓 مستوى الصعوبة</label>
+        <select id="diffSelect">
+          <option value="سهل">🟢 سهل — مبادئ أساسية</option>
+          <option value="متوسط" selected>🟡 متوسط — تطبيق المعرفة</option>
+          <option value="صعب">🔴 صعب — تحليل وتفكير نقدي</option>
+        </select>
+      </div>
+      <button class="btn-primary" id="generateBtn" onclick="generateQuiz()">✨ ولّد الأسئلة الآن</button>
+    </div>
+
+    <div class="loading-screen" id="loadingScreen">
+      <div class="spinner"></div>
+      <p id="loadingMsg">جاري تحليل الموضوع...</p>
+    </div>
+
+    <div class="quiz-screen" id="quizScreen">
+      <div class="quiz-header">
+        <div class="quiz-header-left">
+          <span class="quiz-topic" id="quizTopicLabel">الموضوع</span>
+          <span class="quiz-progress-text" id="progressText">السؤال 1 من 5</span>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
+          </div>
+        </div>
+        <div class="score-badge">
+          <div class="score-badge-num" id="liveScore">0</div>
+          <div class="score-badge-label">النقاط</div>
+        </div>
+      </div>
+      <div class="question-body" id="questionBody">
+        <div class="q-num-tag" id="qNumTag">❓ السؤال 1</div>
+        <div class="question-text" id="questionText">نص السؤال هنا...</div>
+      </div>
+      <div class="options-grid" id="optionsGrid"></div>
+      <div class="feedback-box" id="feedbackBox"></div>
+      <div class="quiz-actions">
+        <button class="btn-next" id="nextBtn" onclick="nextQuestion()">التالي ←</button>
+        <button class="btn-restart" onclick="restartQuiz()">↺ إعادة البداية</button>
+      </div>
+    </div>
+
+    <div class="result-screen" id="resultScreen">
+      <div class="result-emoji" id="resultEmoji">🎉</div>
+      <div class="result-title" id="resultTitle">عمل رائع!</div>
+      <div class="result-subtitle" id="resultSubtitle">انتهيت من الاختبار</div>
+      <div class="result-ring">
+        <svg width="160" height="160" viewBox="0 0 160 160">
+          <circle cx="80" cy="80" r="68" fill="none" stroke="#eaf8f2" stroke-width="10"/>
+          <circle id="resultArc" cx="80" cy="80" r="68" fill="none"
+            stroke="#1a9e74" stroke-width="10"
+            stroke-dasharray="427.26" stroke-dashoffset="427.26"
+            stroke-linecap="round" style="transition: stroke-dashoffset 1.2s ease;"/>
+        </svg>
+        <div class="result-ring-center">
+          <div class="result-pct" id="resultPct">0%</div>
+          <div class="result-pct-label">صحيح</div>
+        </div>
+      </div>
+      <div class="result-stats">
+        <div class="result-stat">
+          <span class="result-stat-num" id="rCorrect">0</span>
+          <span class="result-stat-label">إجابات صحيحة</span>
+        </div>
+        <div class="result-stat">
+          <span class="result-stat-num" id="rWrong" style="color:var(--red)">0</span>
+          <span class="result-stat-label">إجابات خاطئة</span>
+        </div>
+        <div class="result-stat">
+          <span class="result-stat-num" id="rTotal">0</span>
+          <span class="result-stat-label">مجموع الأسئلة</span>
+        </div>
+      </div>
+      <button class="btn-try-again" onclick="restartQuiz()">🔄 إعادة الاختبار</button>
+      <button class="btn-new-quiz" onclick="newQuiz()">➕ موضوع جديد</button>
+    </div>
+  </div>
+
+  <div class="side-panel">
+    <div class="side-card anim">
+      <h3>⚡ موضوعات سريعة</h3>
+      <div class="preset-list">
+        <button class="preset-btn" onclick="usePreset('الثورة الصناعية وأثرها على المجتمع الأوروبي')">🏭 الثورة الصناعية</button>
+        <button class="preset-btn" onclick="usePreset('مفاهيم الكيمياء: الذرة والعناصر والجدول الدوري')">⚗️ الكيمياء الأساسية</button>
+        <button class="preset-btn" onclick="usePreset('قواعد النحو العربي: المبتدأ والخبر والجملة الاسمية')">📝 النحو العربي</button>
+        <button class="preset-btn" onclick="usePreset('المعادلات التربيعية وطرق حلها في الرياضيات')">📐 المعادلات التربيعية</button>
+        <button class="preset-btn" onclick="usePreset('الجهاز المناعي ووظائفه في جسم الإنسان')">🧬 الجهاز المناعي</button>
+        <button class="preset-btn" onclick="usePreset('أسباب الحرب العالمية الأولى ونتائجها')">⚔️ الحرب العالمية الأولى</button>
+      </div>
+    </div>
+    <div class="side-card anim anim-d1">
+      <h3>📊 سجل الاختبارات</h3>
+      <div class="history-list" id="historyList">
+        <div class="no-history">لا توجد اختبارات سابقة بعد</div>
+      </div>
+    </div>
+    <div class="tip-card anim anim-d1">
+      <h3>💡 نصيحة الدراسة</h3>
+      <p id="tipText">الاختبار الذاتي من أقوى أساليب المراجعة — يُثبّت المعلومة في الذاكرة طويلة المدى أفضل بكثير من إعادة القراءة.</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <strong>StudyVibe</strong>
+  مشروع مادة برمجة صفحات الويب — 2025 ©️
+</footer>
+
+<script>
+  function openSidebar() {
+    document.getElementById('mySidebar').style.width = '270px';
+    document.getElementById('overlay').style.display = 'block';
+  }
+  function closeSidebar() {
+    document.getElementById('mySidebar').style.width = '0';
+    document.getElementById('overlay').style.display = 'none';
+  }
+  function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.href = 'login.html';
+  }
+
+  let questions = [];
+  let currentQ = 0;
+  let score = 0;
+  let answered = false;
+  let currentTopic = '';
+  let history = JSON.parse(localStorage.getItem('svQuizHistory') || '[]');
+
+  const tips = [
+    'الاختبار الذاتي من أقوى أساليب المراجعة — يُثبّت المعلومة في الذاكرة طويلة المدى.',
+    'ركّز على الأسئلة التي أخطأت فيها — المراجعة الانتقائية أكثر فاعلية من الشاملة.',
+    'اشرح إجابتك بصوت عالٍ بعد كل سؤال — التعليم يُعزز الفهم العميق.',
+    'أكمل الاختبار دون تشتيت ثم راجع النتائج — التركيز يرفع الكفاءة.',
+    'الفاصل الزمني بين جلسات المراجعة يقوي الاسترجاع — ذاكر اليوم وراجع بعد يومين.'
+  ];
+  document.getElementById('tipText').textContent = tips[Math.floor(Math.random() * tips.length)];
+
+  function usePreset(topic) {
+    document.getElementById('topicInput').value = topic;
+    document.getElementById('topicInput').focus();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function renderHistory() {
+    const el = document.getElementById('historyList');
+    if (history.length === 0) {
+      el.innerHTML = '<div class="no-history">لا توجد اختبارات سابقة بعد</div>';
+      return;
+    }
+    el.innerHTML = history.slice(-5).reverse().map(h => `
+      <div class="history-item">
+        <div class="history-item-topic">${h.topic.substring(0, 30)}${h.topic.length > 30 ? '...' : ''}</div>
+        <div class="history-item-score">
+          <span>${h.score}/${h.total} صحيح</span>
+          <span class="history-item-date">${h.date}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+  renderHistory();
+
+  const loadingMsgs = [
+    'جاري تحليل الموضوع...',
+    'أنشئ الأسئلة والخيارات...',
+    'أضيف الشرح والتفاصيل...',
+    'اللمسات الأخيرة...'
+  ];
+
+  async function generateQuiz() {
+    const topic = document.getElementById('topicInput').value.trim();
+    if (!topic) {
+      document.getElementById('topicInput').style.borderColor = 'var(--red)';
+      document.getElementById('topicInput').focus();
+      setTimeout(() => document.getElementById('topicInput').style.borderColor = '', 2000);
+      return;
+    }
+    const count = parseInt(document.getElementById('qCountSelect').value);
+    const diff = document.getElementById('diffSelect').value;
+    currentTopic = topic;
+    show('loadingScreen');
+
+    let mi = 0;
+    const msgInterval = setInterval(() => {
+      mi = (mi + 1) % loadingMsgs.length;
+      document.getElementById('loadingMsg').textContent = loadingMsgs[mi];
+    }, 1800);
+
+    const prompt = `أنت مساعد تعليمي محترف. اجعل جميع ردودك باللغة العربية حصرًا.
+
+الموضوع: "${topic}"
+عدد الأسئلة المطلوبة: ${count}
+مستوى الصعوبة: ${diff}
+
+المطلوب: أنشئ ${count} أسئلة اختيار متعدد دقيقة ومتنوعة حول الموضوع أعلاه.
+
+تعليمات مهمة جداً:
+- أجب فقط بـ JSON صالح بدون أي كلمات أخرى
+- لا تضف أي markdown أو backticks
+- كل سؤال له 4 خيارات بالعربية
+- الإجابة الصحيحة تكون رقم من 0 إلى 3
+- أضف شرحاً مختصراً مفيداً لكل سؤال
+
+صيغة الإجابة (JSON فقط):
+{
+  "questions": [
+    {
+      "q": "نص السؤال باللغة العربية",
+      "opts": ["الخيار أ", "الخيار ب", "الخيار ج", "الخيار د"],
+      "ans": 0,
+      "exp": "شرح مختصر للإجابة الصحيحة"
+    }
+  ]
+}`;
+
+    try {
+      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          messages: [{ role: 'user', content: prompt }]
+        })
+      });
+      const data = await resp.json();
+      const raw = data.content.map(b => b.text || '').join('');
+      const clean = raw.replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(clean);
+      clearInterval(msgInterval);
+      questions = parsed.questions;
+      currentQ = 0; score = 0; answered = false;
+      startQuiz();
+    } catch (e) {
+      clearInterval(msgInterval);
+      questions = generateFallback(topic, count);
+      currentQ = 0; score = 0; answered = false;
+      startQuiz();
+    }
+  }
+
+  function generateFallback(topic, count) {
+    const samples = [
+      { q: `ما هي أهمية دراسة موضوع: "${topic.substring(0,30)}"؟`, opts: ['توسيع المعرفة العامة', 'تطوير مهارات التفكير النقدي', 'تحسين الأداء الأكاديمي', 'جميع ما ذكر'], ans: 3, exp: 'دراسة المواضيع المختلفة تجمع بين توسيع المعرفة وتطوير التفكير وتحسين الأداء.' },
+      { q: 'ما أفضل أسلوب لمراجعة المادة الدراسية؟', opts: ['القراءة الصامتة فقط', 'الاختبار الذاتي والممارسة', 'الاستماع للمحاضرات فقط', 'كتابة الملاحظات فقط'], ans: 1, exp: 'الاختبار الذاتي يُثبّت المعلومة في الذاكرة طويلة المدى بشكل فعّال.' },
+      { q: 'ما الفرق بين الحفظ والفهم في التعلم؟', opts: ['لا فرق بينهما', 'الحفظ أهم من الفهم دائماً', 'الفهم يتيح التطبيق والتحليل أما الحفظ فسطحي', 'الحفظ يكفي للنجاح الأكاديمي'], ans: 2, exp: 'الفهم يُمكّن الطالب من التطبيق والتحليل وحل مسائل جديدة.' },
+    ];
+    return samples.slice(0, Math.min(count, samples.length));
+  }
+
+  function startQuiz() {
+    document.getElementById('quizTopicLabel').textContent = currentTopic.substring(0, 40) + (currentTopic.length > 40 ? '...' : '');
+    show('quizScreen');
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    const q = questions[currentQ];
+    answered = false;
+    document.getElementById('qNumTag').textContent = `❓ السؤال ${currentQ + 1}`;
+    document.getElementById('questionText').textContent = q.q;
+    document.getElementById('progressText').textContent = `السؤال ${currentQ + 1} من ${questions.length}`;
+    document.getElementById('progressBar').style.width = `${(currentQ / questions.length) * 100}%`;
+    document.getElementById('liveScore').textContent = score;
+    document.getElementById('nextBtn').style.display = 'none';
+    const fb = document.getElementById('feedbackBox');
+    fb.style.display = 'none'; fb.className = 'feedback-box';
+    const letters = ['أ', 'ب', 'ج', 'د'];
+    const grid = document.getElementById('optionsGrid');
+    grid.innerHTML = q.opts.map((opt, i) => `
+      <button class="option-btn" onclick="selectAnswer(${i})" data-idx="${i}">
+        <span class="option-letter">${letters[i]}</span>
+        ${opt}
+      </button>
+    `).join('');
+    document.getElementById('questionBody').classList.remove('anim');
+    void document.getElementById('questionBody').offsetWidth;
+    document.getElementById('questionBody').classList.add('anim');
+  }
+
+  function selectAnswer(idx) {
+    if (answered) return;
+    answered = true;
+    const q = questions[currentQ];
+    const btns = document.querySelectorAll('.option-btn');
+    btns.forEach(b => b.disabled = true);
+    const fb = document.getElementById('feedbackBox');
+    const isCorrect = idx === q.ans;
+    if (isCorrect) {
+      btns[idx].classList.add('correct', 'pop');
+      score++;
+      document.getElementById('liveScore').textContent = score;
+      fb.className = 'feedback-box correct';
+      fb.innerHTML = `✅ <strong>إجابة صحيحة!</strong> ${q.exp}`;
+    } else {
+      btns[idx].classList.add('wrong', 'shake');
+      btns[q.ans].classList.add('reveal-correct');
+      fb.className = 'feedback-box wrong';
+      fb.innerHTML = `❌ <strong>إجابة خاطئة.</strong> الصحيح: <strong>${q.opts[q.ans]}</strong> — ${q.exp}`;
+    }
+    fb.style.display = 'block';
+    document.getElementById('nextBtn').style.display = 'flex';
+  }
+
+  function nextQuestion() {
+    currentQ++;
+    if (currentQ >= questions.length) showResults();
+    else renderQuestion();
+  }
+
+  function showResults() {
+    const pct = Math.round((score / questions.length) * 100);
+    const wrong = questions.length - score;
+    document.getElementById('rCorrect').textContent = score;
+    document.getElementById('rWrong').textContent = wrong;
+    document.getElementById('rTotal').textContent = questions.length;
+    document.getElementById('resultPct').textContent = pct + '%';
+    let emoji, title, subtitle;
+    if (pct === 100)      { emoji='🏆'; title='مثالي تماماً!';      subtitle='أجبت على جميع الأسئلة بشكل صحيح — أداء استثنائي!'; }
+    else if (pct >= 80)  { emoji='🎉'; title='عمل رائع جداً!';     subtitle='نتيجة ممتازة! أنت تتقن الموضوع بشكل جيد جداً.'; }
+    else if (pct >= 60)  { emoji='💪'; title='أداء جيد!';          subtitle='نتيجة مقبولة، مراجعة إضافية ستُحسّن أداءك أكثر.'; }
+    else if (pct >= 40)  { emoji='📚'; title='تحتاج مراجعة!';      subtitle='راجع الموضوع مجدداً وحاول الاختبار مرة أخرى.'; }
+    else                  { emoji='🔄'; title='لا تستسلم!';         subtitle='ابدأ بقراءة الموضوع بعناية ثم عد للاختبار.'; }
+    document.getElementById('resultEmoji').textContent = emoji;
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultSubtitle').textContent = subtitle;
+    setTimeout(() => {
+      document.getElementById('resultArc').style.strokeDashoffset = 427.26 * (1 - pct / 100);
+    }, 200);
+    history.push({ topic: currentTopic, score, total: questions.length, date: new Date().toLocaleDateString('ar-SA') });
+    localStorage.setItem('svQuizHistory', JSON.stringify(history));
+    renderHistory();
+    show('resultScreen');
+  }
+
+  function restartQuiz() {
+    currentQ = 0; score = 0; answered = false;
+    document.getElementById('resultArc').style.strokeDashoffset = 427.26;
+    startQuiz();
+  }
+
+  function newQuiz() {
+    document.getElementById('resultArc').style.strokeDashoffset = 427.26;
+    document.getElementById('topicInput').value = '';
+    show('setupScreen');
+  }
+
+  function show(id) {
+    ['setupScreen','loadingScreen','quizScreen','resultScreen'].forEach(s => {
+      const el = document.getElementById(s);
+      if (el) el.style.display = (s === id) ? 'block' : 'none';
+    });
+    if (id === 'quizScreen') document.getElementById('quizScreen').style.display = 'block';
+  }
+</script>
+</body>
+</html>

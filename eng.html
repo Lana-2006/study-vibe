@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyVibe - الإنجازات</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a9e74;
+    --green-dark: #0f6e52;
+    --green-deeper: #094d3a;
+    --green-light: #d1f0e5;
+    --green-xlight: #eaf8f2;
+    --cream: #faf9f5;
+    --text: #1a1f1c;
+    --text-muted: #5a6b62;
+    --border: rgba(26,158,116,0.15);
+    --card-bg: #ffffff;
+    --shadow: 0 4px 24px rgba(15,110,82,0.10);
+    --shadow-hover: 0 8px 36px rgba(15,110,82,0.18);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    height: 68px;
+  }
+
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 2px 12px rgba(26,158,116,0.3);
+  }
+
+  .logo-text {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--green-dark);
+    letter-spacing: -0.5px;
+  }
+
+  .logo-text em { color: var(--green); font-style: normal; }
+
+  .menu-btn {
+    width: 42px;
+    height: 42px;
+    background: var(--green-xlight);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--green-dark);
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .menu-btn:hover { background: var(--green-light); }
+
+  /* ─── SIDEBAR ─── */
+  .sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 200;
+    top: 0;
+    right: 0;
+    background: var(--green-deeper);
+    overflow-x: hidden;
+    transition: 0.35s cubic-bezier(0.4,0,0.2,1);
+    padding-top: 70px;
+    box-shadow: -4px 0 40px rgba(0,0,0,0.25);
+  }
+
+  .sidebar-logo {
+    position: absolute;
+    top: 0; right: 0; left: 0;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .sidebar-logo span { font-size: 20px; font-weight: 800; color: white; }
+
+  .sidebar a {
+    padding: 13px 22px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.85);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s;
+    border-right: 3px solid transparent;
+  }
+
+  .sidebar a:hover {
+    background: rgba(255,255,255,0.07);
+    color: white;
+    border-right-color: var(--green);
+    padding-right: 26px;
+  }
+
+  .sidebar .divider {
+    height: 1px;
+    background: rgba(255,255,255,0.08);
+    margin: 8px 20px;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 18px; left: 18px;
+    font-size: 24px;
+    color: rgba(255,255,255,0.7);
+    cursor: pointer;
+    background: rgba(255,255,255,0.08);
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+  }
+  .close-btn:hover { color: white; background: rgba(255,255,255,0.15); }
+
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 150;
+    backdrop-filter: blur(2px);
+  }
+
+  /* ─── PAGE HERO ─── */
+  .page-hero {
+    text-align: center;
+    padding: 48px 28px 36px;
+    position: relative;
+  }
+
+  .page-hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 260px;
+    background: radial-gradient(ellipse at center, rgba(26,158,116,0.10) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--green-xlight);
+    border: 1px solid var(--green-light);
+    color: var(--green-dark);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 16px;
+  }
+
+  .page-hero h1 {
+    font-size: clamp(30px, 5vw, 46px);
+    font-weight: 900;
+    color: var(--text);
+    letter-spacing: -1px;
+    margin-bottom: 10px;
+  }
+
+  .page-hero h1 em { font-style: normal; color: var(--green); }
+
+  .page-hero p {
+    font-size: 17px;
+    color: var(--text-muted);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* ─── STATS STRIP ─── */
+  .container { max-width: 900px; margin: 0 auto; padding: 0 28px; }
+
+  .stats-strip {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    margin-bottom: 48px;
+  }
+
+  .stat-item {
+    flex: 1;
+    padding: 20px 10px;
+    text-align: center;
+    border-left: 1px solid var(--border);
+  }
+  .stat-item:last-child { border-left: none; }
+
+  .stat-num {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--green);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  /* ─── SECTION TITLE ─── */
+  .section-title {
+    margin-bottom: 22px;
+  }
+
+  .section-title h2 {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* ─── BADGES GRID ─── */
+  .section { margin-bottom: 48px; }
+
+  .badges-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+    gap: 16px;
+  }
+
+  .badge {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 14px 18px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .badge.unlocked {
+    border-color: var(--green);
+  }
+
+  .badge.unlocked:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .badge.locked {
+    opacity: 0.45;
+    filter: grayscale(80%);
+  }
+
+  .badge-icon {
+    font-size: 2.6em;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .badge-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--green-dark);
+    margin-bottom: 5px;
+  }
+
+  .badge-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .unlock-date {
+    font-size: 11px;
+    color: var(--green);
+    font-weight: 600;
+    margin-top: 8px;
+  }
+
+  .locked-overlay {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 16px;
+    opacity: 0.6;
+  }
+
+  .unlocked-ribbon {
+    position: absolute;
+    top: 0; left: 0;
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px 3px 6px;
+    border-radius: 0 0 10px 0;
+  }
+
+  /* ─── ACHIEVEMENTS LIST ─── */
+  .achievement-item {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.25s;
+  }
+
+  .achievement-item:hover {
+    border-color: var(--green);
+    transform: translateX(-4px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .achievement-icon {
+    font-size: 2em;
+    min-width: 48px;
+    height: 48px;
+    background: var(--green-xlight);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .achievement-content { flex: 1; }
+
+  .achievement-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .achievement-count {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .progress-bar {
+    background: var(--green-xlight);
+    border-radius: 100px;
+    height: 10px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    background: linear-gradient(90deg, var(--green), var(--green-dark));
+    height: 100%;
+    border-radius: 100px;
+    transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+    position: relative;
+  }
+
+  .progress-pct {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--green-dark);
+    min-width: 44px;
+    text-align: left;
+  }
+
+  .completed-tag {
+    font-size: 12px;
+    font-weight: 700;
+    color: white;
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    padding: 3px 10px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+
+  /* ─── CELEBRATION ─── */
+  .celebration {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 5em;
+    animation: celebrate 1s ease-out forwards;
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  @keyframes celebrate {
+    0%   { transform: translate(-50%,-50%) scale(0); opacity: 0; }
+    40%  { transform: translate(-50%,-60%) scale(1.2); opacity: 1; }
+    100% { transform: translate(-50%,-80%) scale(0.8); opacity: 0; }
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .anim { animation: fadeUp 0.6s ease both; }
+  .anim-d1 { animation-delay: 0.1s; }
+  .anim-d2 { animation-delay: 0.2s; }
+  .anim-d3 { animation-delay: 0.3s; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--green-deeper);
+    color: rgba(255,255,255,0.8);
+    text-align: center;
+    padding: 28px 20px;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  footer strong {
+    color: white;
+    font-size: 18px;
+    font-weight: 800;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  footer a { color: #7ee8c2; text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<!-- OVERLAY -->
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- HEADER -->
+<header>
+  <button class="menu-btn" onclick="openSidebar()">☰</button>
+  <div class="logo-wrap">
+    <div class="logo-icon">📚</div>
+    <span class="logo-text">Study<em>Vibe</em></span>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<div id="mySidebar" class="sidebar">
+  <div class="sidebar-logo"><span>StudyVibe</span></div>
+  <span class="close-btn" onclick="closeSidebar()">✕</span>
+  <a href="falsh card.html">🧠 فلاشكارد</a>
+  <a href="mol.html">❓ أسئلة تفاعلية</a>
+  <a href="page.html">📖 ملخصات</a>
+  <div class="divider"></div>
+  <a href="eng.html" style="color:white;border-right-color:var(--green);background:rgba(255,255,255,0.07);">⭐ الإنجازات</a>
+  <a href="to do list .html">📝 قائمة المهام</a>
+  <a href="study.html">📊 التقدم الدراسي</a>
+  <div class="divider"></div>
+  <a href="per.html">🏠 الرئيسية</a>
+  <a href="#" onclick="logout()" style="color:rgba(255,150,150,0.9);">🚪 تسجيل الخروج</a>
+</div>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="hero-badge anim">🏆 إنجازاتك</div>
+  <h1 class="anim anim-d1">تتبّع تقدمك،<br>احتفل بـ<em>نجاحاتك</em></h1>
+  <p class="anim anim-d2">كل إنجاز يعكس جهدك وتفانيك — استمر وافتح المزيد!</p>
+</section>
+
+<!-- STATS -->
+<div class="container">
+  <div class="stats-strip anim anim-d3">
+    <div class="stat-item">
+      <span class="stat-num" id="totalBadges">0</span>
+      <span class="stat-label">شارات محققة</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" id="studyHours">0</span>
+      <span class="stat-label">ساعات دراسة</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" id="completedGoals">0</span>
+      <span class="stat-label">أهداف مكتملة</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" id="currentStreak">0</span>
+      <span class="stat-label">أيام متتالية</span>
+    </div>
+  </div>
+
+  <!-- MOTIVATIONAL BADGES -->
+  <div class="section">
+    <div class="section-title"><h2>⭐ شارات تحفيزية</h2></div>
+    <div class="badges-grid" id="motivationalBadges"></div>
+  </div>
+
+  <!-- TIME ACHIEVEMENTS -->
+  <div class="section">
+    <div class="section-title"><h2>⏱️ إنجازات الوقت</h2></div>
+    <div id="timeAchievements"></div>
+  </div>
+
+  <!-- EDUCATIONAL ACHIEVEMENTS -->
+  <div class="section">
+    <div class="section-title"><h2>🎓 إنجازات تعليمية</h2></div>
+    <div id="educationalAchievements"></div>
+  </div>
+
+  <!-- PERSONAL ACHIEVEMENTS -->
+  <div class="section">
+    <div class="section-title"><h2>📚 إنجازات المهارات الشخصية</h2></div>
+    <div id="personalAchievements"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <strong>StudyVibe</strong>
+  مشروع مادة برمجة صفحات الويب — 2025 ©️
+  <br>
+  للدعم الفني: <a href="mailto:lanaallhyany2006@gmail.com">lanaallhyany2006@gmail.com</a>
+</footer>
+
+<script>
+  /* ─── SIDEBAR ─── */
+  function openSidebar() {
+    document.getElementById('mySidebar').style.width = '270px';
+    document.getElementById('overlay').style.display = 'block';
+  }
+  function closeSidebar() {
+    document.getElementById('mySidebar').style.width = '0';
+    document.getElementById('overlay').style.display = 'none';
+  }
+  function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.href = 'login.html';
+  }
+
+  /* ─── DATA ─── */
+  const data = {
+    motivationalBadges: [
+      { id: 1, icon: '💪', title: 'شارة المثابرة',        desc: 'ادرس 7 أيام متتالية',         unlocked: true,  date: '2025-11-10' },
+      { id: 2, icon: '🎯', title: 'شارة الانضباط',        desc: 'أكمل 20 جلسة بومودورو',       unlocked: true,  date: '2025-11-12' },
+      { id: 3, icon: '⚡', title: 'الإنجاز السريع',       desc: 'أنجز 5 مهام في يوم واحد',     unlocked: false },
+      { id: 4, icon: '🌟', title: 'أفضل بداية أسبوع',    desc: 'ابدأ الأسبوع بقوة',           unlocked: true,  date: '2025-11-14' },
+      { id: 5, icon: '🔥', title: 'العودة بعد الانقطاع', desc: 'عد للدراسة بعد راحة',         unlocked: false },
+      { id: 6, icon: '👑', title: 'ملك التركيز',          desc: 'ساعتان من التركيز المتواصل', unlocked: false }
+    ],
+    timeAchievements: [
+      { icon: '✅', title: 'إكمال أسبوع دراسي كامل',       progress: 5,  total: 7 },
+      { icon: '📅', title: 'إنهاء خطة يوم كامل',           progress: 3,  total: 3, completed: true },
+      { icon: '⏰', title: 'إكمال 30 دقيقة تركيز متواصل',  progress: 30, total: 30, completed: true },
+      { icon: '🎯', title: 'إنهاء جلسة StudyVibe كاملة',   progress: 2,  total: 4 }
+    ],
+    educationalAchievements: [
+      { icon: '📖', title: 'إكمال وحدة دراسية',             progress: 8, total: 10 },
+      { icon: '💡', title: 'فهم درس صعب',                   progress: 1, total: 1,  completed: true },
+      { icon: '📈', title: 'تحسين درجة في مادة معينة',      progress: 0, total: 1 },
+      { icon: '📝', title: 'إكمال ملخص مادة كاملة',         progress: 2, total: 5 },
+      { icon: '🎓', title: 'حضور دورة تعليمية أونلاين',     progress: 6, total: 10 }
+    ],
+    personalAchievements: [
+      { icon: '🧠', title: 'تحسين أساليب الدراسة',           progress: 3, total: 5 },
+      { icon: '🗂️', title: 'تنظيم مكتب الدراسة',           progress: 1, total: 1, completed: true },
+      { icon: '📱', title: 'تقليل وقت الجوال أثناء الدراسة', progress: 4, total: 7 },
+      { icon: '🎨', title: 'استخدام أسلوب دراسي جديد',       progress: 2, total: 3 }
+    ]
+  };
+
+  /* ─── RENDER BADGES ─── */
+  function renderBadges() {
+    const container = document.getElementById('motivationalBadges');
+    const unlockedCount = data.motivationalBadges.filter(b => b.unlocked).length;
+    document.getElementById('totalBadges').textContent = unlockedCount;
+
+    container.innerHTML = data.motivationalBadges.map(badge => `
+      <div class="badge ${badge.unlocked ? 'unlocked' : 'locked'}" onclick="clickBadge(${badge.id})">
+        ${badge.unlocked ? '<div class="unlocked-ribbon">✓ محقق</div>' : '<div class="locked-overlay">🔒</div>'}
+        <span class="badge-icon">${badge.icon}</span>
+        <div class="badge-title">${badge.title}</div>
+        <div class="badge-desc">${badge.desc}</div>
+        ${badge.unlocked ? `<div class="unlock-date">📅 ${badge.date}</div>` : ''}
+      </div>
+    `).join('');
+  }
+
+  /* ─── RENDER ACHIEVEMENTS ─── */
+  function renderAchievements(achievements, containerId) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = achievements.map(ach => {
+      const pct = Math.round((ach.progress / ach.total) * 100);
+      return `
+        <div class="achievement-item">
+          <div class="achievement-icon">${ach.icon}</div>
+          <div class="achievement-content">
+            <div class="achievement-title">${ach.title}</div>
+            <div class="achievement-count">${ach.progress} / ${ach.total}</div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width:0%" data-target="${pct}"></div>
+            </div>
+          </div>
+          ${ach.completed
+            ? '<div class="completed-tag">✓ مكتمل</div>'
+            : `<div class="progress-pct">${pct}%</div>`
+          }
+        </div>
+      `;
+    }).join('');
+
+    // Animate bars after render
+    requestAnimationFrame(() => {
+      container.querySelectorAll('.progress-fill').forEach(bar => {
+        setTimeout(() => { bar.style.width = bar.dataset.target + '%'; }, 100);
+      });
+    });
+  }
+
+  function clickBadge(id) {
+    const badge = data.motivationalBadges.find(b => b.id === id);
+    if (badge && badge.unlocked) {
+      const el = document.createElement('div');
+      el.className = 'celebration';
+      el.textContent = '🎉';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 1000);
+    }
+  }
+
+  /* ─── STATS ─── */
+  document.getElementById('studyHours').textContent    = Math.floor(Math.random() * 50) + 20;
+  document.getElementById('completedGoals').textContent = Math.floor(Math.random() * 15) + 5;
+  document.getElementById('currentStreak').textContent  = Math.floor(Math.random() * 10) + 1;
+
+  /* ─── INIT ─── */
+  renderBadges();
+  renderAchievements(data.timeAchievements,        'timeAchievements');
+  renderAchievements(data.educationalAchievements,  'educationalAchievements');
+  renderAchievements(data.personalAchievements,     'personalAchievements');
+</script>
+</body>
+</html>

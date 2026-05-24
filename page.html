@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الملخصات - StudyVibe</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a9e74;
+    --green-dark: #0f6e52;
+    --green-deeper: #094d3a;
+    --green-light: #d1f0e5;
+    --green-xlight: #eaf8f2;
+    --cream: #faf9f5;
+    --text: #1a1f1c;
+    --text-muted: #5a6b62;
+    --border: rgba(26,158,116,0.15);
+    --card-bg: #ffffff;
+    --shadow: 0 4px 24px rgba(15,110,82,0.10);
+    --shadow-hover: 0 8px 36px rgba(15,110,82,0.18);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    height: 68px;
+  }
+
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 2px 12px rgba(26,158,116,0.3);
+  }
+
+  .logo-text {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--green-dark);
+    letter-spacing: -0.5px;
+  }
+
+  .back-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--green-xlight);
+    border: 1.5px solid var(--border);
+    color: var(--green-dark);
+    font-family: 'Tajawal', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .back-btn:hover { background: var(--green-light); border-color: var(--green); }
+
+  /* ─── SIDEBAR ─── */
+  .menu-btn {
+    width: 42px;
+    height: 42px;
+    background: var(--green-xlight);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--green-dark);
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .menu-btn:hover { background: var(--green-light); }
+
+  .sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 200;
+    top: 0;
+    right: 0;
+    background: var(--green-deeper);
+    overflow-x: hidden;
+    transition: 0.35s cubic-bezier(0.4,0,0.2,1);
+    padding-top: 70px;
+    box-shadow: -4px 0 40px rgba(0,0,0,0.25);
+  }
+
+  .sidebar-logo {
+    position: absolute;
+    top: 0; right: 0; left: 0;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .sidebar-logo span {
+    font-size: 20px;
+    font-weight: 800;
+    color: white;
+  }
+
+  .sidebar a {
+    padding: 13px 22px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.85);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s;
+    border-right: 3px solid transparent;
+  }
+
+  .sidebar a:hover {
+    background: rgba(255,255,255,0.07);
+    color: white;
+    border-right-color: var(--green);
+    padding-right: 26px;
+  }
+
+  .sidebar a.active {
+    background: rgba(26,158,116,0.15);
+    color: white;
+    border-right-color: var(--green);
+  }
+
+  .sidebar .divider {
+    height: 1px;
+    background: rgba(255,255,255,0.08);
+    margin: 8px 20px;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    font-size: 24px;
+    color: rgba(255,255,255,0.7);
+    cursor: pointer;
+    background: rgba(255,255,255,0.08);
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+  }
+  .close-btn:hover { color: white; background: rgba(255,255,255,0.15); }
+
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 150;
+    backdrop-filter: blur(2px);
+  }
+
+  /* ─── PAGE HERO ─── */
+  .page-hero {
+    padding: 48px 28px 40px;
+    text-align: center;
+    position: relative;
+  }
+
+  .page-hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 280px;
+    background: radial-gradient(ellipse at center, rgba(26,158,116,0.10) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--green-xlight);
+    border: 1px solid var(--green-light);
+    color: var(--green-dark);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 18px;
+  }
+
+  .page-hero h1 {
+    font-size: clamp(30px, 5vw, 48px);
+    font-weight: 900;
+    color: var(--text);
+    line-height: 1.2;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+  }
+
+  .page-hero h1 em {
+    font-style: normal;
+    color: var(--green);
+  }
+
+  .page-hero p {
+    font-size: 17px;
+    color: var(--text-muted);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* ─── MAIN CONTENT ─── */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 28px 60px;
+  }
+
+  /* ─── SECTION TITLE ─── */
+  .section-title {
+    margin-bottom: 20px;
+  }
+  .section-title h2 {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.5px;
+  }
+  .section-title p {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-top: 4px;
+  }
+
+  /* ─── UPLOAD ZONE ─── */
+  .upload-zone {
+    background: white;
+    border: 2px dashed rgba(26,158,116,0.4);
+    border-radius: var(--radius);
+    padding: 48px 32px;
+    text-align: center;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: all 0.25s;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .upload-zone::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(26,158,116,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .upload-zone:hover {
+    border-color: var(--green);
+    background: var(--green-xlight);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .upload-zone.drag-over {
+    border-color: var(--green-dark);
+    background: var(--green-light);
+  }
+
+  .upload-icon-wrap {
+    width: 72px;
+    height: 72px;
+    background: var(--green-xlight);
+    border: 2px solid var(--green-light);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 18px;
+    transition: 0.25s;
+  }
+  .upload-zone:hover .upload-icon-wrap { background: var(--green-light); }
+
+  .upload-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .upload-subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+  }
+
+  .upload-types {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .type-badge {
+    background: var(--green-xlight);
+    border: 1px solid var(--green-light);
+    color: var(--green-dark);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 100px;
+  }
+
+  input[type="file"] { display: none; }
+
+  /* ─── FILE INFO ─── */
+  .file-info {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    display: none;
+    align-items: center;
+    gap: 14px;
+    box-shadow: var(--shadow);
+    animation: fadeUp 0.3s ease;
+  }
+
+  .file-info.show { display: flex; }
+
+  .file-icon-box {
+    width: 44px;
+    height: 44px;
+    background: var(--green-xlight);
+    border: 1px solid var(--green-light);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .file-details { flex: 1; }
+  .file-name { font-size: 15px; font-weight: 700; color: var(--text); }
+  .file-size { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+  .remove-btn {
+    background: #fff0f0;
+    border: 1px solid #ffd0d0;
+    color: #c0392b;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 7px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    flex-shrink: 0;
+  }
+  .remove-btn:hover { background: #ffe0e0; }
+
+  /* ─── ACTION BUTTONS ─── */
+  .action-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    color: white;
+    border: none;
+    padding: 13px 28px;
+    border-radius: var(--radius-sm);
+    font-family: 'Tajawal', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s;
+    box-shadow: 0 4px 16px rgba(26,158,116,0.35);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(26,158,116,0.45); }
+  .btn-primary:disabled {
+    background: linear-gradient(135deg, #b0ccc5, #8aada5);
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-secondary {
+    background: white;
+    color: var(--text-muted);
+    border: 1.5px solid var(--border);
+    padding: 13px 24px;
+    border-radius: var(--radius-sm);
+    font-family: 'Tajawal', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-secondary:hover { border-color: var(--green); color: var(--green-dark); background: var(--green-xlight); }
+
+  /* ─── LOADING ─── */
+  .loading-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 48px 32px;
+    text-align: center;
+    display: none;
+    box-shadow: var(--shadow);
+    margin-bottom: 28px;
+  }
+
+  .loading-card.show { display: block; }
+
+  .spinner {
+    width: 52px;
+    height: 52px;
+    border: 4px solid var(--green-light);
+    border-top-color: var(--green);
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+    margin: 0 auto 18px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .loading-sub {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  /* ─── SUMMARY RESULT ─── */
+  .summary-result {
+    display: none;
+    animation: fadeUp 0.5s ease;
+  }
+
+  .summary-result.show { display: block; }
+
+  /* Result Header */
+  .result-header {
+    background: linear-gradient(135deg, var(--green-deeper), var(--green-dark));
+    border-radius: var(--radius) var(--radius) 0 0;
+    padding: 22px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .result-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .result-icon {
+    width: 44px;
+    height: 44px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+
+  .result-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: white;
+  }
+
+  .result-subtitle {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    margin-top: 2px;
+  }
+
+  .result-export-btns {
+    display: flex;
+    gap: 8px;
+  }
+
+  .export-btn {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .export-btn:hover { background: rgba(255,255,255,0.2); }
+
+  /* Result Body */
+  .result-body {
+    background: white;
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 var(--radius) var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  /* Summary Text */
+  .summary-block {
+    padding: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .block-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--green-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 14px;
+  }
+
+  .block-label-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--green);
+    border-radius: 50%;
+  }
+
+  .summary-text {
+    font-size: 16px;
+    line-height: 1.9;
+    color: var(--text);
+    background: var(--cream);
+    border-radius: var(--radius-sm);
+    padding: 20px 22px;
+    border: 1px solid var(--border);
+  }
+
+  /* Key Points */
+  .keypoints-block {
+    padding: 28px;
+  }
+
+  .keypoints-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .keypoints-list li {
+    background: var(--green-xlight);
+    border: 1px solid var(--green-light);
+    border-right: 4px solid var(--green);
+    border-radius: var(--radius-sm);
+    padding: 13px 16px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    transition: 0.2s;
+  }
+
+  .keypoints-list li:hover {
+    background: var(--green-light);
+    transform: translateX(-2px);
+  }
+
+  .kp-icon {
+    color: var(--green);
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ─── TIPS CARD ─── */
+  .tips-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-top: 24px;
+    box-shadow: var(--shadow);
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .tips-icon {
+    width: 42px;
+    height: 42px;
+    background: var(--green-xlight);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .tips-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--green-dark);
+    margin-bottom: 6px;
+  }
+
+  .tips-text {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.75;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--green-deeper);
+    color: rgba(255,255,255,0.8);
+    text-align: center;
+    padding: 28px 20px;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  footer a { color: #7ee8c2; text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  footer strong { color: white; font-size: 18px; font-weight: 800; display: block; margin-bottom: 6px; }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .anim { animation: fadeUp 0.55s ease both; }
+  .anim-d1 { animation-delay: 0.1s; }
+  .anim-d2 { animation-delay: 0.2s; }
+  .anim-d3 { animation-delay: 0.3s; }
+</style>
+</head>
+
+<body>
+
+<!-- OVERLAY -->
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- HEADER -->
+<header>
+  <button class="menu-btn" onclick="openSidebar()" aria-label="فتح القائمة">☰</button>
+  <div class="logo-wrap">
+    <div class="logo-icon">📚</div>
+    <span class="logo-text">Study<em style="color:var(--green)">Vibe</em></span>
+  </div>
+  <a class="back-btn" href="per.html">← الرئيسية</a>
+</header>
+
+<!-- SIDEBAR -->
+<div id="mySidebar" class="sidebar">
+  <div class="sidebar-logo"><span>StudyVibe</span></div>
+  <span class="close-btn" onclick="closeSidebar()">✕</span>
+
+  <a href="falsh card.html">🧠 فلاشكارد</a>
+  <a href="mol.html">❓ أسئلة تفاعلية</a>
+  <a href="page.html" class="active">📖 ملخصات</a>
+  <div class="divider"></div>
+  <a href="eng.html">⭐ الإنجازات</a>
+  <a href="to do list .html">📝 قائمة المهام</a>
+  <a href="study.html">📊 التقدم الدراسي</a>
+  <div class="divider"></div>
+  <a href="#" onclick="logout()" style="color:rgba(255,150,150,0.9);">🚪 تسجيل الخروج</a>
+</div>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="hero-badge anim">📖 أداة الملخصات</div>
+  <h1 class="anim anim-d1">ملخصاتك الذكية،<br>في <em>ثوانٍ معدودة</em></h1>
+  <p class="anim anim-d2">ارفع ملفك واحصل على ملخص شامل ونقاط رئيسية منظمة بضغطة زر</p>
+</section>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+
+  <!-- Upload Zone -->
+  <div class="section-title anim anim-d3">
+    <h2>رفع الملف</h2>
+    <p>ادعم ملفات PDF وTXT وDOCX</p>
+  </div>
+
+  <div class="upload-zone anim anim-d3" id="uploadZone">
+    <div class="upload-icon-wrap">📄</div>
+    <div class="upload-title">اسحب الملف هنا أو اضغط للرفع</div>
+    <div class="upload-subtitle">الحجم الأقصى 10 ميغابايت</div>
+    <div class="upload-types">
+      <span class="type-badge">PDF</span>
+      <span class="type-badge">TXT</span>
+      <span class="type-badge">DOCX</span>
+    </div>
+    <input type="file" id="fileInput" accept=".pdf,.txt,.docx">
+  </div>
+
+  <!-- File Info -->
+  <div class="file-info" id="fileInfo">
+    <div class="file-icon-box">📎</div>
+    <div class="file-details">
+      <div class="file-name" id="fileName"></div>
+      <div class="file-size" id="fileSize"></div>
+    </div>
+    <button class="remove-btn" onclick="removeFile()">✕ إزالة</button>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="action-row">
+    <button class="btn-primary" id="summarizeBtn" onclick="generateSummary()" disabled>
+      ✨ توليد الملخص
+    </button>
+    <button class="btn-secondary" onclick="resetAll()">
+      ↺ إعادة تعيين
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-card" id="loading">
+    <div class="spinner"></div>
+    <div class="loading-text">جاري تحليل الملف...</div>
+    <div class="loading-sub">يرجى الانتظار، نعمل على استخراج المحتوى</div>
+  </div>
+
+  <!-- Summary Result -->
+  <div class="summary-result" id="summaryResult">
+    <div class="result-header">
+      <div class="result-header-left">
+        <div class="result-icon">📝</div>
+        <div>
+          <div class="result-title">الملخص التلقائي</div>
+          <div class="result-subtitle" id="resultSubtitle">تم التحليل بنجاح</div>
+        </div>
+      </div>
+      <div class="result-export-btns">
+        <button class="export-btn" onclick="copyToClipboard()">📋 نسخ</button>
+        <button class="export-btn" onclick="exportAsText()">⬇ تصدير</button>
+      </div>
+    </div>
+    <div class="result-body">
+      <div class="summary-block">
+        <div class="block-label">
+          <div class="block-label-dot"></div>
+          الملخص
+        </div>
+        <div class="summary-text" id="summaryText"></div>
+      </div>
+      <div class="keypoints-block">
+        <div class="block-label">
+          <div class="block-label-dot"></div>
+          النقاط الرئيسية
+        </div>
+        <ul class="keypoints-list" id="keyPointsList"></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tips Card -->
+  <div class="tips-card">
+    <div class="tips-icon">💡</div>
+    <div>
+      <div class="tips-title">نصيحة للاستفادة القصوى</div>
+      <div class="tips-text">
+        للحصول على أفضل ملخص، تأكد أن الملف يحتوي على نص قابل للقراءة وغير مسرب كصور. 
+        بعد التوليد، يمكنك تصدير الملخص أو نسخه مباشرة لاستخدامه في ملاحظاتك.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <strong>StudyVibe</strong>
+  مشروع مادة برمجة صفحات الويب — 2025 ©️
+  <br>
+  للدعم الفني: <a href="mailto:lanaallhyany2006@gmail.com">lanaallhyany2006@gmail.com</a>
+</footer>
+
+<script>
+  /* ─── SIDEBAR ─── */
+  function openSidebar() {
+    document.getElementById('mySidebar').style.width = '270px';
+    document.getElementById('overlay').style.display = 'block';
+  }
+  function closeSidebar() {
+    document.getElementById('mySidebar').style.width = '0';
+    document.getElementById('overlay').style.display = 'none';
+  }
+  function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.href = 'login.html';
+  }
+
+  /* ─── UPLOAD ─── */
+  let currentFile = null;
+  let fileContent = '';
+  let summaryData = null;
+
+  const uploadZone = document.getElementById('uploadZone');
+  const fileInput  = document.getElementById('fileInput');
+
+  uploadZone.onclick = () => fileInput.click();
+
+  uploadZone.addEventListener('dragover', e => {
+    e.preventDefault();
+    uploadZone.classList.add('drag-over');
+  });
+
+  uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+
+  uploadZone.addEventListener('drop', e => {
+    e.preventDefault();
+    uploadZone.classList.remove('drag-over');
+    handleFile(e.dataTransfer.files[0]);
+  });
+
+  fileInput.addEventListener('change', e => handleFile(e.target.files[0]));
+
+  function handleFile(file) {
+    if (!file) return;
+    currentFile = file;
+
+    document.getElementById('fileName').textContent = file.name;
+    document.getElementById('fileSize').textContent = (file.size / 1024).toFixed(1) + ' KB';
+    document.getElementById('fileInfo').classList.add('show');
+    document.getElementById('summarizeBtn').disabled = false;
+
+    const reader = new FileReader();
+    reader.onload = e => fileContent = e.target.result;
+    reader.readAsText(file);
+  }
+
+  function removeFile() {
+    currentFile = null;
+    fileContent = '';
+    fileInput.value = '';
+    document.getElementById('fileInfo').classList.remove('show');
+    document.getElementById('summarizeBtn').disabled = true;
+  }
+
+  /* ─── GENERATE SUMMARY ─── */
+  function generateSummary() {
+    document.getElementById('loading').classList.add('show');
+    document.getElementById('summaryResult').classList.remove('show');
+
+    setTimeout(() => {
+      const name = currentFile.name.replace(/\.[^.]+$/, '');
+
+      const summary = `يتناول هذا المستند موضوع "${name}" بطريقة منهجية ومنظمة، مقدماً نظرة شاملة حول المحتوى الأساسي. يشتمل على مقدمة توضيحية، وأمثلة تطبيقية تدعم الفهم، ونقاط جوهرية تسهل المراجعة السريعة. يختتم المحتوى بخلاصة مركزة تُعزز الاستفادة العملية وتدعم التحضير الفعّال.`;
+
+      summaryData = summary;
+
+      document.getElementById('summaryText').textContent = summary;
+      document.getElementById('resultSubtitle').textContent = `تحليل: ${currentFile.name}`;
+
+      const points = [
+        'تقديم الموضوع بطريقة مبسطة وواضحة تسهّل الاستيعاب',
+        'توفير أمثلة تطبيقية مرتبطة بالمحتوى الرئيسي',
+        'تنظيم المحتوى بشكل منطمي يسهل القراءة والمراجعة',
+        'خلاصة نهائية مركزة تجمع أهم النقاط',
+      ];
+
+      document.getElementById('keyPointsList').innerHTML = points.map(pt => `
+        <li><span class="kp-icon">✦</span>${pt}</li>
+      `).join('');
+
+      document.getElementById('loading').classList.remove('show');
+      document.getElementById('summaryResult').classList.add('show');
+
+      // Scroll to result
+      setTimeout(() => {
+        document.getElementById('summaryResult').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }, 2000);
+  }
+
+  /* ─── EXPORT / COPY ─── */
+  function exportAsText() {
+    const blob = new Blob([summaryData], { type: 'text/plain;charset=utf-8' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = `ملخص_${Date.now()}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function copyToClipboard() {
+    navigator.clipboard.writeText(summaryData)
+      .then(() => {
+        const btn = document.querySelector('.export-btn');
+        const orig = btn.textContent;
+        btn.textContent = '✔ تم النسخ!';
+        setTimeout(() => btn.textContent = orig, 2000);
+      })
+      .catch(() => alert('❌ لم يتم النسخ'));
+  }
+
+  function resetAll() {
+    removeFile();
+    document.getElementById('summaryResult').classList.remove('show');
+    summaryData = null;
+  }
+</script>
+</body>
+</html>

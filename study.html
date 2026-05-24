@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyVibe - التقدم الدراسي</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a9e74;
+    --green-dark: #0f6e52;
+    --green-deeper: #094d3a;
+    --green-light: #d1f0e5;
+    --green-xlight: #eaf8f2;
+    --cream: #faf9f5;
+    --text: #1a1f1c;
+    --text-muted: #5a6b62;
+    --border: rgba(26,158,116,0.15);
+    --card-bg: #ffffff;
+    --shadow: 0 4px 24px rgba(15,110,82,0.10);
+    --shadow-hover: 0 8px 36px rgba(15,110,82,0.18);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    height: 68px;
+  }
+
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .logo-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 2px 12px rgba(26,158,116,0.3);
+  }
+
+  .logo-text {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--green-dark);
+    letter-spacing: -0.5px;
+  }
+
+  .back-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--green-xlight);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--green-dark);
+    font-family: 'Tajawal', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 9px 18px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .back-btn:hover { background: var(--green-light); border-color: var(--green); }
+
+  /* ─── PAGE HERO ─── */
+  .page-hero {
+    background: linear-gradient(135deg, var(--green-deeper), var(--green-dark));
+    color: white;
+    padding: 44px 28px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%;
+    transform: translateX(-50%);
+    width: 700px; height: 400px;
+    background: radial-gradient(ellipse, rgba(255,255,255,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .page-hero-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+    display: block;
+  }
+  .page-hero h1 {
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+  }
+  .page-hero p {
+    font-size: 16px;
+    opacity: 0.85;
+    font-weight: 400;
+  }
+
+  /* ─── MAIN LAYOUT ─── */
+  .main { max-width: 1100px; margin: 0 auto; padding: 36px 24px 60px; }
+
+  /* ─── SECTION LABEL ─── */
+  .section-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ─── STAT CARDS ROW ─── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+    margin-bottom: 36px;
+  }
+
+  .stat-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 16px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: all 0.25s;
+  }
+  .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+
+  .stat-card-num {
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--green);
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+
+  .stat-card-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-top: 6px;
+  }
+
+  .stat-card-icon {
+    font-size: 22px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  /* ─── CARDS ─── */
+  .card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+    transition: box-shadow 0.25s;
+  }
+  .card:hover { box-shadow: var(--shadow-hover); }
+
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-head-icon { font-size: 22px; }
+  .card-head h2 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+
+  /* ─── PROGRESS BARS ─── */
+  .subject-item { margin-bottom: 18px; }
+  .subject-item:last-child { margin-bottom: 0; }
+
+  .subject-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .subject-name { font-size: 15px; font-weight: 700; color: var(--text); }
+  .subject-pct { font-size: 14px; font-weight: 800; color: var(--green); }
+
+  .progress-track {
+    height: 10px;
+    background: var(--green-xlight);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), #2ec4a0);
+    border-radius: 100px;
+    width: 0%;
+    transition: width 1.4s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* ─── TWO-COL GRID ─── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media(max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ─── LESSON LIST ─── */
+  .lesson-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    margin-bottom: 10px;
+    transition: all 0.2s;
+    gap: 12px;
+  }
+  .lesson-item:hover { background: var(--green-xlight); border-color: var(--green-light); }
+  .lesson-item:last-child { margin-bottom: 0; }
+
+  .lesson-name { font-size: 14px; font-weight: 600; color: var(--text); flex: 1; }
+
+  .badge {
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .badge-ok { background: #d4f5e5; color: #0b6e3a; }
+  .badge-review { background: #fff4cc; color: #7a5500; }
+  .badge-no { background: #fde8e8; color: #8b1a1a; }
+
+  /* ─── MINI BAR CHART ─── */
+  .bar-chart-wrap {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    margin-top: 16px;
+  }
+  .bar-chart-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .bar-chart {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+    height: 120px;
+  }
+  .bar-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-end;
+    gap: 6px;
+  }
+  .bar-val { font-size: 13px; font-weight: 800; color: var(--green-dark); }
+  .bar {
+    width: 100%;
+    background: linear-gradient(to top, var(--green), #2ec4a0);
+    border-radius: 6px 6px 0 0;
+    transition: height 1s cubic-bezier(0.4,0,0.2,1);
+  }
+  .bar-lbl { font-size: 12px; color: var(--text-muted); font-weight: 600; text-align: center; }
+
+  /* ─── GOALS ─── */
+  .goal-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 14px;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .goal-item:hover { background: var(--green-xlight); border-color: var(--green-light); }
+  .goal-item:last-child { margin-bottom: 0; }
+
+  .goal-check {
+    width: 22px; height: 22px;
+    border: 2px solid var(--green);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: white;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .goal-check.checked { background: var(--green); }
+
+  .goal-text { font-size: 14px; font-weight: 600; color: var(--text); flex: 1; transition: 0.2s; }
+  .goal-text.done { text-decoration: line-through; color: var(--text-muted); }
+
+  .goals-summary {
+    background: var(--green-xlight);
+    border: 1px solid var(--green-light);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    text-align: center;
+    margin-top: 16px;
+  }
+  .goals-count { font-size: 28px; font-weight: 900; color: var(--green); }
+  .goals-count-label { font-size: 13px; color: var(--text-muted); font-weight: 600; margin-top: 2px; }
+
+  /* ─── ANALYSIS CARDS ─── */
+  .analysis-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+  }
+
+  .analysis-item {
+    background: var(--green-deeper);
+    border-radius: var(--radius-sm);
+    padding: 18px 16px;
+    color: white;
+    transition: all 0.25s;
+  }
+  .analysis-item:hover { transform: translateY(-3px); }
+
+  .analysis-lbl { font-size: 12px; opacity: 0.75; margin-bottom: 6px; font-weight: 500; }
+  .analysis-val { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; }
+
+  /* ─── COMMITMENT STATS ─── */
+  .commit-big {
+    background: var(--green-xlight);
+    border: 1px solid var(--green-light);
+    border-radius: var(--radius-sm);
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .commit-big-num { font-size: 52px; font-weight: 900; color: var(--green); line-height: 1; }
+  .commit-big-label { font-size: 14px; color: var(--text-muted); font-weight: 600; margin-top: 6px; }
+
+  .commit-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    margin-bottom: 10px;
+  }
+  .commit-row:last-child { margin-bottom: 0; }
+  .commit-lbl { font-size: 14px; font-weight: 600; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+  .commit-val { font-size: 16px; font-weight: 800; color: var(--green); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--green-deeper);
+    color: rgba(255,255,255,0.75);
+    text-align: center;
+    padding: 24px;
+    font-size: 14px;
+  }
+  footer strong { color: white; font-size: 16px; font-weight: 800; display: block; margin-bottom: 4px; }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .anim { animation: fadeUp 0.55s ease both; }
+  .d1 { animation-delay: 0.05s; }
+  .d2 { animation-delay: 0.12s; }
+  .d3 { animation-delay: 0.19s; }
+  .d4 { animation-delay: 0.26s; }
+</style>
+</head>
+<body>
+
+<script>
+  if (!localStorage.getItem('currentUser')) window.location.href = 'login.html';
+</script>
+
+<!-- HEADER -->
+<header>
+  <a class="back-btn" href="per.html">← الرئيسية</a>
+  <a class="logo-wrap" href="per.html">
+    <div class="logo-icon">📚</div>
+    <span class="logo-text">StudyVibe</span>
+  </a>
+</header>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <span class="page-hero-icon">📊</span>
+  <h1>التقدم الدراسي</h1>
+  <p>تتبع أداءك، حلّل تقدمك، وحقق أهدافك بذكاء</p>
+</div>
+
+<div class="main">
+
+  <!-- TOP STATS -->
+  <div class="section-label anim d1">نظرة عامة</div>
+  <div class="stats-row anim d1">
+    <div class="stat-card">
+      <span class="stat-card-icon">📅</span>
+      <div class="stat-card-num">5</div>
+      <div class="stat-card-label">أيام دراسية هذا الأسبوع</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-card-icon">⏱️</span>
+      <div class="stat-card-num">12</div>
+      <div class="stat-card-label">جلسات مكتملة</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-card-icon">🎯</span>
+      <div class="stat-card-num">35<span style="font-size:18px;font-weight:600;">د</span></div>
+      <div class="stat-card-label">متوسط وقت التركيز</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-card-icon">🔥</span>
+      <div class="stat-card-num">85<span style="font-size:18px;font-weight:600;">%</span></div>
+      <div class="stat-card-label">معدل الإنجاز اليومي</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-card-icon">🏆</span>
+      <div class="stat-card-num">90<span style="font-size:18px;font-weight:600;">د</span></div>
+      <div class="stat-card-label">أطول فترة تركيز</div>
+    </div>
+  </div>
+
+  <!-- SUBJECT PROGRESS -->
+  <div class="section-label anim d2">التقدم حسب المواد</div>
+  <div class="card anim d2">
+    <div class="card-head">
+      <span class="card-head-icon">📈</span>
+      <h2>نسبة إنجاز كل مادة</h2>
+    </div>
+
+    <div class="subject-item">
+      <div class="subject-header">
+        <span class="subject-name">🔢 الرياضيات</span>
+        <span class="subject-pct">60%</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" data-width="60"></div></div>
+    </div>
+
+    <div class="subject-item">
+      <div class="subject-header">
+        <span class="subject-name">📖 اللغة العربية</span>
+        <span class="subject-pct">45%</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" data-width="45"></div></div>
+    </div>
+
+    <div class="subject-item">
+      <div class="subject-header">
+        <span class="subject-name">🌍 اللغة الإنجليزية</span>
+        <span class="subject-pct">80%</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" data-width="80"></div></div>
+    </div>
+
+    <div class="subject-item">
+      <div class="subject-header">
+        <span class="subject-name">⚗️ العلوم</span>
+        <span class="subject-pct">70%</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" data-width="70"></div></div>
+    </div>
+  </div>
+
+  <!-- LESSONS + GOALS -->
+  <div class="section-label anim d3">تفاصيل الدروس والأهداف</div>
+  <div class="two-col anim d3">
+
+    <!-- LESSONS -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-head-icon">📚</span>
+        <h2>مستوى فهم الدروس</h2>
+      </div>
+
+      <div class="lesson-item">
+        <span class="lesson-name">الدرس الأول: المعادلات</span>
+        <span class="badge badge-ok">✔ تم الفهم</span>
+      </div>
+      <div class="lesson-item">
+        <span class="lesson-name">الدرس الثاني: الهندسة</span>
+        <span class="badge badge-review">↻ يحتاج مراجعة</span>
+      </div>
+      <div class="lesson-item">
+        <span class="lesson-name">الدرس الثالث: الإحصاء</span>
+        <span class="badge badge-ok">✔ تم الفهم</span>
+      </div>
+      <div class="lesson-item">
+        <span class="lesson-name">الدرس الرابع: الجبر</span>
+        <span class="badge badge-no">✕ لم يُفهم</span>
+      </div>
+      <div class="lesson-item">
+        <span class="lesson-name">الدرس الخامس: التفاضل</span>
+        <span class="badge badge-review">↻ يحتاج مراجعة</span>
+      </div>
+
+      <div class="bar-chart-wrap">
+        <div class="bar-chart-title">ملخص حالة الفهم</div>
+        <div class="bar-chart">
+          <div class="bar-wrap">
+            <span class="bar-val">3</span>
+            <div class="bar" data-h="75" style="height:0px;"></div>
+            <span class="bar-lbl">✔ مفهوم</span>
+          </div>
+          <div class="bar-wrap">
+            <span class="bar-val">2</span>
+            <div class="bar" data-h="50" style="height:0px; background:linear-gradient(to top,#e8a000,#f5c842);"></div>
+            <span class="bar-lbl">↻ مراجعة</span>
+          </div>
+          <div class="bar-wrap">
+            <span class="bar-val">1</span>
+            <div class="bar" data-h="25" style="height:0px; background:linear-gradient(to top,#c0392b,#e74c3c);"></div>
+            <span class="bar-lbl">✕ غير مفهوم</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-head-icon">🎯</span>
+        <h2>الأهداف الشهرية</h2>
+      </div>
+
+      <div id="goalsList">
+        <div class="goal-item" onclick="toggleGoal(0)">
+          <div class="goal-check checked">✓</div>
+          <div class="goal-text done">رفع درجة الرياضيات إلى 85</div>
+        </div>
+        <div class="goal-item" onclick="toggleGoal(1)">
+          <div class="goal-check"></div>
+          <div class="goal-text">إكمال 5 فصول دراسية</div>
+        </div>
+        <div class="goal-item" onclick="toggleGoal(2)">
+          <div class="goal-check checked">✓</div>
+          <div class="goal-text done">قراءة كتاب واحد</div>
+        </div>
+        <div class="goal-item" onclick="toggleGoal(3)">
+          <div class="goal-check"></div>
+          <div class="goal-text">تقليل المماطلة بنسبة 50%</div>
+        </div>
+        <div class="goal-item" onclick="toggleGoal(4)">
+          <div class="goal-check"></div>
+          <div class="goal-text">حضور 3 دورات تعليمية</div>
+        </div>
+        <div class="goal-item" onclick="toggleGoal(5)">
+          <div class="goal-check checked">✓</div>
+          <div class="goal-text done">تنظيم الملفات الدراسية</div>
+        </div>
+      </div>
+
+      <div class="goals-summary">
+        <div class="goals-count" id="goalsCount">3/6</div>
+        <div class="goals-count-label">أهداف محققة هذا الشهر</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMMITMENT -->
+  <div class="section-label anim d4">مؤشر الالتزام</div>
+  <div class="card anim d4">
+    <div class="card-head">
+      <span class="card-head-icon">🗓️</span>
+      <h2>إحصائيات الالتزام</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 2fr;gap:20px;align-items:start;">
+      <div>
+        <div class="commit-big">
+          <div class="commit-big-num">5</div>
+          <div class="commit-big-label">أيام دراسية هذا الأسبوع</div>
+        </div>
+        <div class="commit-row">
+          <span class="commit-lbl">⏱️ الجلسات المكتملة</span>
+          <span class="commit-val">12</span>
+        </div>
+        <div class="commit-row">
+          <span class="commit-lbl">🎯 متوسط التركيز</span>
+          <span class="commit-val">35 د</span>
+        </div>
+        <div class="commit-row">
+          <span class="commit-lbl">🔥 أطول فترة</span>
+          <span class="commit-val">90 د</span>
+        </div>
+      </div>
+      <div>
+        <div class="bar-chart-wrap" style="height:100%;">
+          <div class="bar-chart-title">أماكن التركيز الأكثر فاعلية</div>
+          <div class="bar-chart">
+            <div class="bar-wrap">
+              <span class="bar-val">85%</span>
+              <div class="bar" data-h="85" style="height:0px;"></div>
+              <span class="bar-lbl">🏛️ المكتبة</span>
+            </div>
+            <div class="bar-wrap">
+              <span class="bar-val">70%</span>
+              <div class="bar" data-h="70" style="height:0px;"></div>
+              <span class="bar-lbl">🪑 المكتب</span>
+            </div>
+            <div class="bar-wrap">
+              <span class="bar-val">50%</span>
+              <div class="bar" data-h="50" style="height:0px;"></div>
+              <span class="bar-lbl">☕ الكافيه</span>
+            </div>
+            <div class="bar-wrap">
+              <span class="bar-val">40%</span>
+              <div class="bar" data-h="40" style="height:0px;"></div>
+              <span class="bar-lbl">🏠 الغرفة</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANALYSIS -->
+  <div class="section-label">التحليل الذكي</div>
+  <div class="card">
+    <div class="card-head">
+      <span class="card-head-icon">🧠</span>
+      <h2>تحليل أدائك</h2>
+    </div>
+    <div class="analysis-grid">
+      <div class="analysis-item">
+        <div class="analysis-lbl">⏰ الوقت الأكثر تركيزاً</div>
+        <div class="analysis-val">8 ص — 11 ص</div>
+      </div>
+      <div class="analysis-item">
+        <div class="analysis-lbl">📚 المادة المفضلة</div>
+        <div class="analysis-val">اللغة الإنجليزية</div>
+      </div>
+      <div class="analysis-item">
+        <div class="analysis-lbl">📍 أفضل مكان للتركيز</div>
+        <div class="analysis-val">المكتبة</div>
+      </div>
+      <div class="analysis-item">
+        <div class="analysis-lbl">🎯 معدل الإنجاز اليومي</div>
+        <div class="analysis-val">85%</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <strong>StudyVibe</strong>
+  استمر في التقدم! كل يوم يقربك من أهدافك 🌟
+  <br style="margin-bottom:4px;">
+  © 2025 StudyVibe
+</footer>
+
+<script>
+  /* AUTH */
+  if (!localStorage.getItem('currentUser')) window.location.href = 'login.html';
+
+  /* PROGRESS BARS */
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.querySelectorAll('.progress-fill').forEach(bar => {
+        bar.style.width = bar.dataset.width + '%';
+      });
+    }, 200);
+
+    /* BAR CHARTS */
+    setTimeout(() => {
+      document.querySelectorAll('.bar[data-h]').forEach(bar => {
+        bar.style.height = bar.dataset.h + '%';
+      });
+    }, 500);
+  });
+
+  /* GOALS */
+  const goalStates = [true, false, true, false, false, true];
+
+  function toggleGoal(i) {
+    goalStates[i] = !goalStates[i];
+    const items = document.querySelectorAll('#goalsList .goal-item');
+    const box  = items[i].querySelector('.goal-check');
+    const txt  = items[i].querySelector('.goal-text');
+
+    if (goalStates[i]) {
+      box.classList.add('checked');
+      box.textContent = '✓';
+      txt.classList.add('done');
+      new Audio('https://cdn.pixabay.com/audio/2022/03/10/audio_1e5d934ee4.mp3').play().catch(()=>{});
+    } else {
+      box.classList.remove('checked');
+      box.textContent = '';
+      txt.classList.remove('done');
+    }
+
+    const done = goalStates.filter(Boolean).length;
+    document.getElementById('goalsCount').textContent = done + '/6';
+  }
+</script>
+</body>
+</html>

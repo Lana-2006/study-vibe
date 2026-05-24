@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyVibe</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a9e74;
+    --green-dark: #0f6e52;
+    --green-deeper: #094d3a;
+    --green-light: #d1f0e5;
+    --green-xlight: #eaf8f2;
+    --cream: #faf9f5;
+    --text: #1a1f1c;
+    --text-muted: #5a6b62;
+    --border: rgba(26,158,116,0.15);
+    --card-bg: #ffffff;
+    --shadow: 0 4px 24px rgba(15,110,82,0.10);
+    --shadow-hover: 0 8px 36px rgba(15,110,82,0.18);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    height: 68px;
+  }
+
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 2px 12px rgba(26,158,116,0.3);
+  }
+
+  .logo-text {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--green-dark);
+    letter-spacing: -0.5px;
+  }
+
+  .logo-text span {
+    color: var(--green);
+  }
+
+  .menu-btn {
+    width: 42px;
+    height: 42px;
+    background: var(--green-xlight);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--green-dark);
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .menu-btn:hover { background: var(--green-light); }
+
+  .sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 200;
+    top: 0;
+    right: 0;
+    background: var(--green-deeper);
+    overflow-x: hidden;
+    transition: 0.35s cubic-bezier(0.4,0,0.2,1);
+    padding-top: 70px;
+    box-shadow: -4px 0 40px rgba(0,0,0,0.25);
+  }
+
+  .sidebar-logo {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .sidebar-logo span {
+    font-size: 20px;
+    font-weight: 800;
+    color: white;
+  }
+
+  .sidebar a {
+    padding: 13px 22px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.85);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s;
+    border-right: 3px solid transparent;
+  }
+
+  .sidebar a:hover {
+    background: rgba(255,255,255,0.07);
+    color: white;
+    border-right-color: var(--green);
+    padding-right: 26px;
+  }
+
+  .sidebar .divider {
+    height: 1px;
+    background: rgba(255,255,255,0.08);
+    margin: 8px 20px;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    font-size: 24px;
+    color: rgba(255,255,255,0.7);
+    cursor: pointer;
+    background: rgba(255,255,255,0.08);
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+  }
+  .close-btn:hover { color: white; background: rgba(255,255,255,0.15); }
+
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 150;
+    backdrop-filter: blur(2px);
+  }
+
+  .hero {
+    padding: 60px 28px 48px;
+    text-align: center;
+    position: relative;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 300px;
+    background: radial-gradient(ellipse at center, rgba(26,158,116,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--green-xlight);
+    border: 1px solid var(--green-light);
+    color: var(--green-dark);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-size: clamp(36px, 6vw, 58px);
+    font-weight: 900;
+    color: var(--text);
+    line-height: 1.15;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--green);
+  }
+
+  .hero p {
+    font-size: 18px;
+    color: var(--text-muted);
+    max-width: 520px;
+    margin: 0 auto 32px;
+    line-height: 1.7;
+    font-weight: 400;
+  }
+
+  .hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    color: white;
+    border: none;
+    padding: 13px 28px;
+    border-radius: var(--radius-sm);
+    font-family: 'Tajawal', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s;
+    box-shadow: 0 4px 16px rgba(26,158,116,0.35);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(26,158,116,0.45); }
+
+  .btn-secondary {
+    background: white;
+    color: var(--green-dark);
+    border: 1.5px solid var(--border);
+    padding: 13px 28px;
+    border-radius: var(--radius-sm);
+    font-family: 'Tajawal', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .btn-secondary:hover { border-color: var(--green); background: var(--green-xlight); }
+
+  .stats-strip {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    max-width: 640px;
+    margin: 0 auto 56px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .stat-item {
+    flex: 1;
+    padding: 18px 10px;
+    text-align: center;
+    border-left: 1px solid var(--border);
+  }
+  .stat-item:last-child { border-left: none; }
+
+  .stat-num {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--green);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .section-title {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .section-title h2 {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.5px;
+  }
+  .section-title p {
+    color: var(--text-muted);
+    font-size: 15px;
+    margin-top: 6px;
+  }
+
+  .quick-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 14px;
+    max-width: 860px;
+    margin: 0 auto 56px;
+    padding: 0 28px;
+  }
+
+  .quick-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 16px;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.25s;
+    box-shadow: var(--shadow);
+  }
+  .quick-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--green);
+  }
+
+  .quick-card-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--green-xlight);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    transition: 0.25s;
+  }
+  .quick-card:hover .quick-card-icon { background: var(--green-light); }
+
+  .quick-card-label {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .quick-card-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .pomodoro-wrap {
+    max-width: 860px;
+    margin: 0 auto 56px;
+    padding: 0 28px;
+  }
+
+  .pomodoro-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 36px 32px;
+    box-shadow: var(--shadow);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: center;
+  }
+
+  @media(max-width: 620px) {
+    .pomodoro-card { grid-template-columns: 1fr; }
+  }
+
+  .timer-display {
+    text-align: center;
+  }
+
+  .timer-ring {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 20px;
+  }
+
+  .timer-ring svg {
+    transform: rotate(-90deg);
+    position: absolute;
+    top: 0; left: 0;
+  }
+
+  .timer-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #timer {
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--text);
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+
+  .timer-mode {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--green);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .session-pills {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .session-pill {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--green-light);
+    border: 2px solid var(--border);
+  }
+  .session-pill.done { background: var(--green); border-color: var(--green-dark); }
+
+  .timer-btns {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .timer-btn {
+    background: var(--green-xlight);
+    border: 1.5px solid var(--border);
+    color: var(--green-dark);
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 9px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .timer-btn:hover { background: var(--green-light); }
+  .timer-btn.primary {
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 3px 12px rgba(26,158,116,0.3);
+  }
+  .timer-btn.primary:hover { box-shadow: 0 5px 18px rgba(26,158,116,0.4); }
+
+  .timer-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+  }
+
+  .setting-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  .setting-row input[type="number"] {
+    width: 56px;
+    text-align: center;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 6px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--green-dark);
+    background: white;
+    outline: none;
+  }
+  .setting-row input:focus { border-color: var(--green); }
+
+  .motivational-msg {
+    text-align: center;
+    font-size: 15px;
+    color: var(--green-dark);
+    font-weight: 600;
+    min-height: 24px;
+    margin-top: 10px;
+  }
+
+  .quote-banner {
+    background: linear-gradient(135deg, var(--green-deeper), var(--green-dark));
+    color: white;
+    text-align: center;
+    padding: 32px 28px;
+    margin-bottom: 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  .quote-banner::before {
+    content: '❝';
+    position: absolute;
+    font-size: 120px;
+    opacity: 0.06;
+    top: -20px;
+    right: 30px;
+    line-height: 1;
+  }
+  .quote-text {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    transition: opacity 0.5s;
+  }
+
+  .schedule-wrap {
+    max-width: 860px;
+    margin: 0 auto 56px;
+    padding: 0 28px;
+  }
+
+  .schedule-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .schedule-card table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .schedule-card thead {
+    background: var(--green-deeper);
+    color: white;
+  }
+
+  .schedule-card thead th {
+    padding: 14px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 0.3px;
+  }
+
+  .schedule-card tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .schedule-card tbody tr:last-child { border-bottom: none; }
+  .schedule-card tbody tr:hover { background: var(--green-xlight); }
+
+  .schedule-card td {
+    padding: 14px 20px;
+    font-size: 15px;
+    text-align: center;
+    color: var(--text-muted);
+  }
+
+  .schedule-card td:first-child {
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .calc-wrap {
+    max-width: 860px;
+    margin: 0 auto 56px;
+    padding: 0 28px;
+  }
+
+  .calc-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    box-shadow: var(--shadow);
+  }
+
+  .calc-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .calc-label {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .calc-input {
+    width: 100px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    background: var(--cream);
+    outline: none;
+    text-align: center;
+    transition: 0.2s;
+  }
+  .calc-input:focus { border-color: var(--green); background: white; }
+  .calc-input:read-only { background: var(--green-xlight); color: var(--green-dark); border-color: var(--green-light); }
+
+  .calc-symbol {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--green);
+  }
+
+  .sound-fab {
+    position: fixed;
+    bottom: 28px;
+    left: 28px;
+    z-index: 300;
+  }
+
+  .sound-fab-btn {
+    width: 52px;
+    height: 52px;
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(26,158,116,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s;
+  }
+  .sound-fab-btn:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(26,158,116,0.5); }
+
+  .sound-panel {
+    position: absolute;
+    bottom: 64px;
+    left: 0;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px;
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 175px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  }
+
+  .sound-panel.open { display: flex; }
+
+  .sound-btn {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    text-align: right;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sound-btn:hover { background: var(--green-xlight); border-color: var(--green); }
+  .sound-btn.active { background: var(--green-xlight); border-color: var(--green); color: var(--green-dark); }
+
+  footer {
+    background: var(--green-deeper);
+    color: rgba(255,255,255,0.8);
+    text-align: center;
+    padding: 28px 20px;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  footer a {
+    color: #7ee8c2;
+    text-decoration: none;
+  }
+  footer a:hover { text-decoration: underline; }
+
+  footer strong {
+    color: white;
+    font-size: 18px;
+    font-weight: 800;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .anim { animation: fadeUp 0.6s ease both; }
+  .anim-d1 { animation-delay: 0.1s; }
+  .anim-d2 { animation-delay: 0.2s; }
+  .anim-d3 { animation-delay: 0.3s; }
+  .anim-d4 { animation-delay: 0.4s; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 0 28px; }
+</style>
+</head>
+
+<body>
+
+<script>
+  if (!localStorage.getItem('currentUser')) {
+    window.location.href = 'login.html';
+  }
+</script>
+
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<header>
+  <button class="menu-btn" onclick="openSidebar()" aria-label="فتح القائمة">☰</button>
+  <div class="logo-wrap">
+    <div class="logo-icon">📚</div>
+    <span class="logo-text">Study<em style="color:var(--green)">Vibe</em></span>
+  </div>
+</header>
+
+<div id="mySidebar" class="sidebar">
+  <div class="sidebar-logo">
+    <span>StudyVibe</span>
+  </div>
+  <span class="close-btn" onclick="closeSidebar()">✕</span>
+
+  <a href="flash.html">🧠 فلاشكارد</a>
+  <a href="Qquestion.html">❓ أسئلة تفاعلية</a>
+  <a href="page.html">📖 ملخصات</a>
+  <div class="divider"></div>
+  <a href="eng.html">⭐ الإنجازات</a>
+  <a href="to do list .html">📝 قائمة المهام</a>
+  <a href="study.html">📊 التقدم الدراسي</a>
+  <div class="divider"></div>
+  <a href="#" onclick="logout()" style="color:rgba(255,150,150,0.9);">🚪 تسجيل الخروج</a>
+</div>
+
+
+<section class="hero">
+  <div class="hero-badge anim">✨ منصة مذاكرتك المثالية</div>
+  <h1 class="anim anim-d1">ذاكر بتركيز،<br>حقق <em>أهدافك</em></h1>
+  <p class="anim anim-d2">بيئة دراسية محفزة بأدوات ذكية تساعدك على التركيز وإنجاز أكثر في وقت أقل</p>
+  <div class="hero-actions anim anim-d3">
+    <button class="btn-primary" onclick="scrollToPomodoro()">⏳ ابدأ بومودورو</button>
+    <button class="btn-secondary" onclick="toggleSoundPanel()">🎧 أصوات التركيز</button>
+  </div>
+</section>
+
+<div class="container">
+  <div class="stats-strip anim anim-d4">
+    <div class="stat-item">
+      <span class="stat-num">4</span>
+      <span class="stat-label">جلسات دراسية</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">25</span>
+      <span class="stat-label">دقيقة تركيز</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">3</span>
+      <span class="stat-label">أصوات محيطية</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">∞</span>
+      <span class="stat-label">إمكانيات</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="section-title">
+    <h2>الوصول السريع</h2>
+    <p>كل أدواتك في مكان واحد</p>
+  </div>
+  <div class="quick-grid">
+    <a class="quick-card" href="flash.html">
+      <div class="quick-card-icon">🧠</div>
+      <span class="quick-card-label">فلاشكارد</span>
+      <span class="quick-card-desc">مراجعة ذكية</span>
+    </a>
+    <a class="quick-card" href="Qquestion.html">
+      <div class="quick-card-icon">❓</div>
+      <span class="quick-card-label">أسئلة</span>
+      <span class="quick-card-desc">اختبر نفسك</span>
+    </a>
+    <a class="quick-card" href="page.html">
+      <div class="quick-card-icon">📖</div>
+      <span class="quick-card-label">ملخصات</span>
+      <span class="quick-card-desc">مواد منظمة</span>
+    </a>
+    <a class="quick-card" href="eng.html">
+      <div class="quick-card-icon">⭐</div>
+      <span class="quick-card-label">الإنجازات</span>
+      <span class="quick-card-desc">تتبع تقدمك</span>
+    </a>
+    <a class="quick-card" href="to do list .html">
+      <div class="quick-card-icon">📝</div>
+      <span class="quick-card-label">المهام</span>
+      <span class="quick-card-desc">نظّم يومك</span>
+    </a>
+    <a class="quick-card" href="study.html">
+      <div class="quick-card-icon">📊</div>
+      <span class="quick-card-label">التقدم</span>
+      <span class="quick-card-desc">إحصائيات</span>
+    </a>
+  </div>
+</div>
+
+<div class="pomodoro-wrap" id="pomodoro">
+  <div class="section-title">
+    <h2>⏳ مؤقت بومودورو</h2>
+    <p>اضبط جلساتك وتحكم في وقتك</p>
+  </div>
+  <div class="pomodoro-card">
+    <div class="timer-display">
+      <div class="timer-ring">
+        <svg width="180" height="180" viewBox="0 0 180 180">
+          <circle cx="90" cy="90" r="80" fill="none" stroke="#eaf8f2" stroke-width="10"/>
+          <circle id="timerArc" cx="90" cy="90" r="80" fill="none"
+            stroke="#1a9e74" stroke-width="10"
+            stroke-dasharray="502.65"
+            stroke-dashoffset="0"
+            stroke-linecap="round"/>
+        </svg>
+        <div class="timer-center">
+          <div id="timer">25:00</div>
+          <div class="timer-mode" id="timerMode">دراسة</div>
+        </div>
+      </div>
+      <div class="session-pills" id="sessionPills">
+        <div class="session-pill"></div>
+        <div class="session-pill"></div>
+        <div class="session-pill"></div>
+        <div class="session-pill"></div>
+      </div>
+      <div class="session-count" id="sessionCount" style="font-size:13px;color:var(--text-muted);font-weight:600;margin-bottom:14px;">الجلسة 1 من 4</div>
+      <div class="timer-btns">
+        <button class="timer-btn primary" onclick="startTimer()">▶ ابدأ</button>
+        <button class="timer-btn" onclick="pauseTimer()">⏸ إيقاف</button>
+        <button class="timer-btn" onclick="resetTimer()">↺ إعادة</button>
+      </div>
+      <div class="motivational-msg" id="motivationalMessage"></div>
+    </div>
+
+    <div class="timer-settings">
+      <div class="setting-row">
+        <span class="setting-label">🎯 وقت الدراسة (د)</span>
+        <input type="number" id="studyTime" value="25" min="1" max="60">
+      </div>
+      <div class="setting-row">
+        <span class="setting-label">☕ استراحة قصيرة (د)</span>
+        <input type="number" id="shortBreak" value="5" min="1" max="30">
+      </div>
+      <div class="setting-row">
+        <span class="setting-label">🌙 استراحة طويلة (د)</span>
+        <input type="number" id="longBreak" value="15" min="1" max="60">
+      </div>
+      <div style="background:var(--green-xlight);border:1px solid var(--green-light);border-radius:10px;padding:14px;font-size:13px;color:var(--green-deep);line-height:1.7;">
+        💡 <strong style="color:var(--green-dark)">كيف يعمل بومودورو؟</strong><br>
+        ركّز 25 دقيقة ← استرح 5 دقائق ← بعد 4 جلسات خذ استراحة طويلة 15 دقيقة.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="quote-banner">
+  <div class="quote-text" id="changingQuote">🚀 كل خطوة صغيرة تقربك من هدفك الكبير!</div>
+</div>
+
+<div class="schedule-wrap">
+  <div class="section-title">
+    <h2>📅 الجدول الدراسي</h2>
+    <p>خطط أسبوعك الدراسي مسبقاً</p>
+  </div>
+  <div class="schedule-card">
+    <table>
+      <thead>
+        <tr>
+          <th>اليوم</th>
+          <th>المادة</th>
+          <th>الوقت</th>
+          <th>الحالة</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>الأحد</td><td>—</td><td>—</td><td>—</td></tr>
+        <tr><td>الإثنين</td><td>—</td><td>—</td><td>—</td></tr>
+        <tr><td>الثلاثاء</td><td>—</td><td>—</td><td>—</td></tr>
+        <tr><td>الأربعاء</td><td>—</td><td>—</td><td>—</td></tr>
+        <tr><td>الخميس</td><td>—</td><td>—</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="calc-wrap">
+  <div class="section-title">
+    <h2>🧮 حاسبة وقت المذاكرة</h2>
+    <p>احسب كم ستحتاج لإنهاء المادة</p>
+  </div>
+  <div class="calc-card">
+    <div class="calc-row">
+      <span class="calc-label">عدد الشابترات</span>
+      <input class="calc-input" type="number" id="chapCount" placeholder="0" oninput="calcTime()">
+      <span class="calc-symbol">×</span>
+      <span class="calc-label">دقائق لكل شابتر</span>
+      <input class="calc-input" type="number" id="minsPerChap" placeholder="0" oninput="calcTime()">
+      <span class="calc-symbol">=</span>
+      <span class="calc-label">الوقت الكلي</span>
+      <input class="calc-input" type="text" id="totalTime" placeholder="—" readonly>
+    </div>
+  </div>
+</div>
+
+<div class="sound-fab">
+  <div class="sound-panel" id="soundPanel">
+    <button class="sound-btn" id="snd-rain" onclick="toggleSound('rain')">🌧 صوت المطر</button>
+    <button class="sound-btn" id="snd-coffee" onclick="toggleSound('coffee')">☕ كوفي شوب</button>
+    <button class="sound-btn" id="snd-sea" onclick="toggleSound('sea')">🌊 أمواج البحر</button>
+  </div>
+  <button class="sound-fab-btn" onclick="toggleSoundPanel()" title="أصوات التركيز">🎧</button>
+</div>
+
+<footer>
+  <strong>StudyVibe</strong>
+
+  <br>
+  للدعم الفني: <a href="mailto:lanaallhyany2006@gmail.com">lanaallhyany2006@gmail.com</a>
+</footer>
+
+<script>
+  function openSidebar() {
+    document.getElementById('mySidebar').style.width = '270px';
+    document.getElementById('overlay').style.display = 'block';
+  }
+  function closeSidebar() {
+    document.getElementById('mySidebar').style.width = '0';
+    document.getElementById('overlay').style.display = 'none';
+  }
+  function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.href = 'login.html';
+  }
+
+  
+  const sounds = {
+    rain:   new Audio(''),
+    coffee: new Audio(''),
+    sea:    new Audio('')
+  };
+  for (let k in sounds) sounds[k].loop = true;
+  let activeSound = null;
+
+  function toggleSound(name) {
+    const btn = document.getElementById('snd-' + name);
+    if (activeSound === name) {
+      sounds[name].pause();
+      btn.classList.remove('active');
+      activeSound = null;
+    } else {
+      if (activeSound) {
+        sounds[activeSound].pause();
+        document.getElementById('snd-' + activeSound).classList.remove('active');
+      }
+      sounds[name].play().catch(() => {});
+      btn.classList.add('active');
+      activeSound = name;
+    }
+  }
+
+  function toggleSoundPanel() {
+    document.getElementById('soundPanel').classList.toggle('open');
+  }
+
+  document.addEventListener('click', e => {
+    const fab = document.querySelector('.sound-fab');
+    if (!fab.contains(e.target)) {
+      document.getElementById('soundPanel').classList.remove('open');
+    }
+  });
+
+  const CIRCUMFERENCE = 2 * Math.PI * 80;
+  let timer, timeLeft = 25 * 60, totalTime = 25 * 60, isRunning = false, sessionCount = 1, mode = 'study';
+
+  function startTimer() {
+    if (isRunning) return;
+    isRunning = true;
+    timer = setInterval(updateTimer, 1000);
+  }
+
+  function pauseTimer() {
+    clearInterval(timer);
+    isRunning = false;
+  }
+
+  function resetTimer() {
+    clearInterval(timer);
+    isRunning = false;
+    timeLeft = (parseInt(document.getElementById('studyTime').value) || 25) * 60;
+    totalTime = timeLeft;
+    mode = 'study';
+    sessionCount = 1;
+    document.getElementById('motivationalMessage').textContent = '';
+    document.getElementById('timerMode').textContent = 'دراسة';
+    updateDisplay();
+    updateSessionPills();
+  }
+
+  function updateTimer() {
+    if (timeLeft > 0) {
+      timeLeft--;
+      updateDisplay();
+    } else {
+      clearInterval(timer);
+      isRunning = false;
+
+      const alertSound = new Audio('https://cdn.pixabay.com/audio/2022/03/15/audio_732a5f0c62.mp3');
+      alertSound.play().catch(() => {});
+
+      const msgs = [
+        '👏 عمل رائع! استمر على نفس الحماس!',
+        '💪 أحسنت! خذ نفسًا وارجع بقوة!',
+        '🔥 تركيز ممتاز! تستحق الاستراحة.',
+        '🌟 أداء مميز! خطوة نحو النجاح.',
+        '🚀 رائع! كل جلسة تقربك لهدفك أكثر.'
+      ];
+
+      if (mode === 'study') {
+        document.getElementById('motivationalMessage').textContent = msgs[Math.floor(Math.random() * msgs.length)];
+        if (sessionCount % 4 === 0) {
+          mode = 'longBreak';
+          timeLeft = (parseInt(document.getElementById('longBreak').value) || 15) * 60;
+          document.getElementById('timerMode').textContent = 'استراحة طويلة';
+          alert('👏 وقت الاستراحة الطويلة!');
+        } else {
+          mode = 'shortBreak';
+          timeLeft = (parseInt(document.getElementById('shortBreak').value) || 5) * 60;
+          document.getElementById('timerMode').textContent = 'استراحة قصيرة';
+          alert('☕ خذ استراحة قصيرة!');
+        }
+        totalTime = timeLeft;
+      } else {
+        mode = 'study';
+        sessionCount++;
+        document.getElementById('motivationalMessage').textContent = '';
+        document.getElementById('timerMode').textContent = 'دراسة';
+        timeLeft = (parseInt(document.getElementById('studyTime').value) || 25) * 60;
+        totalTime = timeLeft;
+        alert('📚 عد للدراسة!');
+      }
+
+      updateSessionDisplay();
+      updateSessionPills();
+      startTimer();
+    }
+  }
+
+  function updateDisplay() {
+    const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+    const s = (timeLeft % 60).toString().padStart(2, '0');
+    document.getElementById('timer').textContent = `${m}:${s}`;
+
+    const pct = totalTime > 0 ? timeLeft / totalTime : 1;
+    const offset = CIRCUMFERENCE * (1 - pct);
+    document.getElementById('timerArc').style.strokeDashoffset = offset;
+  }
+
+  function updateSessionDisplay() {
+    document.getElementById('sessionCount').textContent = `الجلسة ${sessionCount} من 4`;
+  }
+
+  function updateSessionPills() {
+    const pills = document.querySelectorAll('.session-pill');
+    pills.forEach((p, i) => p.classList.toggle('done', i < (sessionCount - 1) % 4));
+  }
+
+  function scrollToPomodoro() {
+    document.getElementById('pomodoro').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function calcTime() {
+    const chaps = parseInt(document.getElementById('chapCount').value) || 0;
+    const mins  = parseInt(document.getElementById('minsPerChap').value) || 0;
+    const total = chaps * mins;
+    if (total === 0) {
+      document.getElementById('totalTime').value = '—';
+      return;
+    }
+    const h = Math.floor(total / 60);
+    const m = total % 60;
+    document.getElementById('totalTime').value = h > 0 ? `${h} س ${m} د` : `${m} دقيقة`;
+  }
+
+ 
+  const quotes = [
+    '🚀 كل خطوة صغيرة تقربك من هدفك الكبير!',
+    '💡 لا تنتظر الفرصة، اصنعها بنفسك!',
+    '🔥 المثابرة تصنع الفارق، لا تتوقف الآن!',
+    '🌟 النجاح نتيجة التركيز والاستمرار!',
+    '📘 تعلم كل يوم شيئًا جديدًا يقربك من حلمك!'
+  ];
+  let qi = 0;
+  setInterval(() => {
+    const el = document.getElementById('changingQuote');
+    el.style.opacity = '0';
+    setTimeout(() => {
+      qi = (qi + 1) % quotes.length;
+      el.textContent = quotes[qi];
+      el.style.opacity = '1';
+    }, 500);
+  }, 8000);
+
+ 
+  updateDisplay();
+</script>
+</body>
+</html>
